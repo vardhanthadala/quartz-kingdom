@@ -1,0 +1,96 @@
+'use client';
+
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import Link from 'next/link';
+
+export default function AboutSection() {
+  const statsRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
+    // Fade in intro text
+    gsap.fromTo(
+      ".about-text-reveal",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: ".about-text-reveal",
+          start: "top 85%",
+        }
+      }
+    );
+
+    // Stats counter animation
+    gsap.fromTo(
+      ".stat-item",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: statsRef.current,
+          start: "top 90%",
+        }
+      }
+    );
+  }, { scope: containerRef });
+
+  return (
+    <section 
+      id="about-us"
+      ref={containerRef}
+      className="relative py-32 md:py-64 px-6 md:px-12 bg-white text-[#0f172a] border-t border-slate-100"
+    >
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(circle_at_top_right,#e0f2fe_0%,transparent_50%),radial-gradient(circle_at_bottom_left,#f0fdf4_0%,transparent_50%)]"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-start">
+          <div>
+            <h2 className="text-xs uppercase tracking-[0.4em] text-slate-400 font-bold mb-8">Who We Are</h2>
+            <p className="about-text-reveal text-3xl md:text-5xl font-serif font-light leading-snug">
+              Since 1998, Quartz has been at the forefront of <span className="italic font-bold text-[#38bdf8]">industrial mineral processing</span>, bridging the gap between raw earth and high-performance technology.
+            </p>
+          </div>
+          
+          <div className="flex flex-col gap-12">
+            <p className="about-text-reveal text-slate-500 text-lg md:text-xl font-light leading-relaxed">
+              We specialize in the extraction and refinement of premium quartz and silica, serving global industries ranging from semiconductor manufacturing to high-end architectural surfaces. Our commitment to purity is unmatched.
+            </p>
+            
+            <div ref={statsRef} className="grid grid-cols-2 gap-8 pt-12 border-t border-slate-100">
+              <div className="stat-item">
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#0f172a]">25+</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Years of Excellence</span>
+              </div>
+              <div className="stat-item">
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#4ade80]">40+</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Countries Served</span>
+              </div>
+              <div className="stat-item">
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#38bdf8]">99.9%</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Quartz Purity</span>
+              </div>
+              <div className="stat-item">
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#0f172a]">12</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Active Mines</span>
+              </div>
+            </div>
+
+            <div className="mt-8">
+                <Link href="/about-us" className="text-xs uppercase tracking-[0.4em] font-bold border-b border-slate-200 pb-2 hover:border-[#38bdf8] transition-colors inline-block">
+                    Read our full story
+                </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
