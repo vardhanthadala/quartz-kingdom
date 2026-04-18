@@ -5,7 +5,10 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Lenis from 'lenis';
 import Link from 'next/link';
-import ProductsSection from '@/components/ProductsSection';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const ProductsSection = dynamic(() => import('@/components/ProductsSection'));
 
 export default function Products() {
   const containerRef = useRef(null);
@@ -15,13 +18,18 @@ export default function Products() {
       duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      syncTouch: true,
     });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+    };
   }, []);
 
   useGSAP(() => {
@@ -58,9 +66,12 @@ export default function Products() {
 
       <nav id="main-nav" className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-500 text-white">
         <Link href="/" className="group">
-          <img
+          <Image
             src="/logo-2.png"
             alt="Quartz Logo"
+            width={120}
+            height={40}
+            priority
             className="h-10 md:h-14 w-auto object-contain transition-all duration-500 nav-logo-img"
           />
         </Link>
@@ -72,7 +83,15 @@ export default function Products() {
 
       <section id="products-hero" className="relative h-[70vh] w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
-          <img src="/hero-1.png" alt="Products Hero" className="w-full h-full object-cover grayscale brightness-[0.3]" />
+          <Image 
+            src="/hero-1.png" 
+            alt="Products Hero" 
+            fill
+            sizes="100vw"
+            priority
+            className="w-full h-full object-cover will-change-transform" 
+          />
+          <div className="absolute inset-0 bg-black/70 pointer-events-none" />
         </div>
         <div className="relative z-10 text-center px-4 max-w-5xl">
           <h1 className="text-5xl sm:text-7xl md:text-9xl font-serif font-light leading-none tracking-tighter text-white overflow-hidden">
@@ -85,12 +104,11 @@ export default function Products() {
       <ProductsSection />
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300;1,700&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         ::-webkit-scrollbar { display: none; }
-        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-display { font-family: 'Syne', sans-serif; }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-        .font-main { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: var(--font-plus-jakarta-sans), sans-serif; }
+        .font-display { font-family: var(--font-syne), sans-serif; }
+        .font-serif { font-family: var(--font-cormorant-garamond), serif; }
+        .font-main { font-family: var(--font-plus-jakarta-sans), sans-serif; }
 
         #main-nav { color: #ffffff; }
         #main-nav .nav-logo-img { filter: none; }

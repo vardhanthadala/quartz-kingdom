@@ -64,42 +64,45 @@ export default function Home() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: '+=280%',
+          end: '+=200%',
           pin: true,
-          scrub: 2,
+          scrub: 1,
           anticipatePin: 1,
         },
       });
 
+      // Zoom front image towards the camera and fade it out
       tl.to(topImageRef.current, {
-        scale: isMobile ? 12 : isTablet ? 15 : 20,
+        scale: 3,
+        z: 350,
         opacity: 0,
-        rotate: isMobile ? 0 : 5,
-        filter: 'blur(8px)',
-        ease: 'power2.inOut',
+        transformOrigin: "center center",
+        ease: "power1.inOut",
         duration: 1,
         force3D: true,
       }, 0);
 
+      // Same for the intro content (Quartz text)
       tl.to(introContentRef.current, {
-        scale: isMobile ? 10 : isTablet ? 12 : 15,
+        scale: 2.5,
         opacity: 0,
-        filter: 'blur(5px)',
-        ease: 'power2.inOut',
+        transformOrigin: "center center",
+        ease: "power1.inOut",
         duration: 1,
         force3D: true,
-      }, 0.05);
+      }, 0);
 
+      // Very subtle zoom in on the background hero matching reference
       tl.to(
         heroSectionRef.current,
         {
-          scale: 1,
-          borderRadius: '0px',
-          opacity: 1,
-          ease: 'power3.inOut',
+          scale: 1.1,
+          transformOrigin: "center center",
+          ease: "power1.inOut",
           duration: 1,
+          force3D: true,
         },
-        0.1
+        0
       );
 
       tl.fromTo(
@@ -108,13 +111,11 @@ export default function Home() {
           y: 150,
           opacity: 0,
           skewY: 4,
-          filter: 'blur(8px)'
         },
         {
           y: 0,
           opacity: 1,
           skewY: 0,
-          filter: 'blur(0px)',
           duration: 1.2,
           ease: 'expo.out'
         },
@@ -176,11 +177,20 @@ export default function Home() {
         <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
           <section
             ref={heroSectionRef}
-            className="opacity-0 scale-[0.15] rounded-full relative w-full h-full bg-center bg-no-repeat bg-cover flex flex-col items-center justify-center text-center px-4"
-            style={{ backgroundImage: `url('/hero-2.png')` }}
+            className="relative w-full h-full flex flex-col items-center justify-center text-center px-4 will-change-transform bg-black overflow-hidden"
           >
-            <div className="absolute inset-0 bg-black/40" />
-
+            {/* Using next/image for hero-2 instead of css bg-image for smoother scale transforms on mobile */}
+            <Image 
+              src="/hero-2.png"
+              alt="Hero Background"
+              fill
+              sizes="100vw"
+              priority
+              className="object-cover"
+            />
+            {/* Absolute overlay replaces expensive CSS filters */}
+            <div className="absolute inset-0 bg-black/50 z-0" />
+            
             <div className="relative z-10 py-4 w-full px-4 max-w-5xl mx-auto flex flex-col items-center">
               <h1
                 ref={titleRef}
@@ -215,8 +225,10 @@ export default function Home() {
             fill
             sizes="100vw"
             priority
-            className="w-full h-full object-cover md:object-center origin-center grayscale brightness-[0.7] will-change-transform"
+            className="w-full h-full object-cover md:object-center origin-center will-change-transform"
           />
+          {/* Absolute overlay over hero-1 so we don't use heavy CSS GPU filters on the image itself */}
+          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
           <div
             ref={introContentRef}

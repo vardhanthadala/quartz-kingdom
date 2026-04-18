@@ -5,7 +5,10 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Lenis from 'lenis';
 import Link from 'next/link';
-import AboutSection from '@/components/AboutSection';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const AboutSection = dynamic(() => import('@/components/AboutSection'));
 
 export default function AboutUs() {
   const containerRef = useRef(null);
@@ -17,13 +20,18 @@ export default function AboutUs() {
       duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      syncTouch: true,
     });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+    };
   }, []);
 
   useGSAP(() => {
@@ -47,9 +55,12 @@ export default function AboutUs() {
 
       <nav id="main-nav" className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-500 text-white">
         <Link href="/" className="group">
-          <img
+          <Image
             src="/logo-2.png"
             alt="Quartz Logo"
+            width={120}
+            height={40}
+            priority
             className="h-10 md:h-14 w-auto object-contain transition-all duration-500 nav-logo-img"
           />
         </Link>
@@ -61,7 +72,15 @@ export default function AboutUs() {
 
       <section id="hero-2" ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
-          <img src="/hero-2.png" alt="About Hero" className="w-full h-full object-cover grayscale brightness-[0.4] scale-110" />
+          <Image 
+            src="/hero-2.png" 
+            alt="About Hero" 
+            fill
+            sizes="100vw"
+            priority
+            className="w-full h-full object-cover scale-110 will-change-transform" 
+          />
+          <div className="absolute inset-0 bg-black/60 pointer-events-none" />
         </div>
         <div className="relative z-10 text-center px-4 max-w-5xl">
           <h1 ref={titleRef} className="text-5xl sm:text-7xl md:text-9xl font-serif font-light leading-none tracking-tighter text-white overflow-hidden">
@@ -75,12 +94,11 @@ export default function AboutUs() {
       <AboutSection />
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300;1,700&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         ::-webkit-scrollbar { display: none; }
-        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-display { font-family: 'Syne', sans-serif; }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-        .font-main { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: var(--font-plus-jakarta-sans), sans-serif; }
+        .font-display { font-family: var(--font-syne), sans-serif; }
+        .font-serif { font-family: var(--font-cormorant-garamond), serif; }
+        .font-main { font-family: var(--font-plus-jakarta-sans), sans-serif; }
 
         #main-nav { color: #ffffff; }
         #main-nav .nav-logo-img { filter: none; }
