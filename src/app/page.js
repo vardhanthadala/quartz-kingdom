@@ -65,20 +65,22 @@ export default function Home() {
       });
 
       tl.to(topImageRef.current, {
-        scale: isMobile ? 80 : isTablet ? 40 : 25,
+        scale: isMobile ? 12 : isTablet ? 15 : 20,
         opacity: 0,
         rotate: isMobile ? 0 : 5,
-        filter: 'blur(15px)',
-        ease: 'power3.inOut',
+        filter: 'blur(8px)',
+        ease: 'power2.inOut',
         duration: 1,
+        force3D: true,
       }, 0);
 
       tl.to(introContentRef.current, {
-        scale: isMobile ? 60 : isTablet ? 30 : 20,
+        scale: isMobile ? 10 : isTablet ? 12 : 15,
         opacity: 0,
-        filter: 'blur(10px)',
+        filter: 'blur(5px)',
         ease: 'power2.inOut',
         duration: 1,
+        force3D: true,
       }, 0.05);
 
       tl.to(
@@ -124,7 +126,7 @@ export default function Home() {
         "-=0.7"
       );
 
-      // Navbar theme switch
+      // Navbar theme switch - using global selector since it's outside this container's scope
       ScrollTrigger.create({
         trigger: "#about-us",
         start: "top 10%",
@@ -200,12 +202,12 @@ export default function Home() {
             ref={topImageRef}
             src="/hero-1.png"
             alt="Intro"
-            className="w-full h-full object-cover md:object-center origin-center grayscale brightness-[0.7]"
+            className="w-full h-full object-cover md:object-center origin-center grayscale brightness-[0.7] will-change-transform"
           />
 
           <div
             ref={introContentRef}
-            className="absolute inset-0 flex flex-col items-center justify-center origin-center px-6"
+            className="absolute inset-0 flex flex-col items-center justify-center origin-center px-6 will-change-transform"
           >
             <div className="w-full h-full relative max-w-[1400px] mx-auto">
               <div className="absolute top-[22%] left-[5%] md:top-[25%] md:left-[10%] hero-title">

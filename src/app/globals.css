@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.will-change-transform {
+  will-change: transform, opacity, filter;
+}
