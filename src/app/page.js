@@ -65,7 +65,7 @@ export default function Home() {
           start: 'top top',
           end: '+=200%',
           pin: true,
-          scrub: 1,
+          scrub: true,
           anticipatePin: 1,
         },
       });
@@ -76,7 +76,7 @@ export default function Home() {
         z: 350,
         opacity: 0,
         transformOrigin: "center center",
-        ease: "power1.inOut",
+        ease: "none",
         duration: 1,
         force3D: true,
       }, 0);
@@ -86,7 +86,7 @@ export default function Home() {
         scale: 2.5,
         opacity: 0,
         transformOrigin: "center center",
-        ease: "power1.inOut",
+        ease: "none",
         duration: 1,
         force3D: true,
       }, 0);
@@ -97,7 +97,7 @@ export default function Home() {
         {
           scale: 1.1,
           transformOrigin: "center center",
-          ease: "power1.inOut",
+          ease: "none",
           duration: 1,
           force3D: true,
         },
