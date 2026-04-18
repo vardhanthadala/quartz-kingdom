@@ -6,8 +6,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Lenis from 'lenis';
 import Link from 'next/link';
-import AboutSection from '@/components/AboutSection';
-import ProductsSection from '@/components/ProductsSection';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const AboutSection = dynamic(() => import('@/components/AboutSection'));
+const ProductsSection = dynamic(() => import('@/components/ProductsSection'));
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -19,25 +22,29 @@ export default function Home() {
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-  // Global Smooth Scroll (Lenis) for Premium Feel
+  // Global Smooth Scroll (Lenis) for Premium Feel synced perfectly with GSAP
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      syncTouch: true,
     });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
     lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
+
+    // Sync Lenis perfectly with GSAP ticker
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    // Disable GSAP lag smoothing to avoid jumps during heavy scroll
     gsap.ticker.lagSmoothing(0);
 
-    return () => lenis.destroy();
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+    };
   }, []);
 
   useGSAP(() => {
@@ -150,9 +157,12 @@ export default function Home() {
 
       <nav id="main-nav" className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-500 text-white">
         <Link href="/" className="group">
-          <img
+          <Image
             src="/logo-2.png"
             alt="Quartz Logo"
+            width={120}
+            height={40}
+            priority
             className="h-10 md:h-14 w-auto object-contain transition-all duration-500 nav-logo-img"
           />
         </Link>
@@ -198,10 +208,13 @@ export default function Home() {
         </div>
 
         <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden origin-center">
-          <img
+          <Image
             ref={topImageRef}
             src="/hero-1.png"
             alt="Intro"
+            fill
+            sizes="100vw"
+            priority
             className="w-full h-full object-cover md:object-center origin-center grayscale brightness-[0.7] will-change-transform"
           />
 

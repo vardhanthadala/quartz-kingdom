@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ProductsSection() {
   const containerRef = useRef(null);
@@ -79,14 +80,16 @@ export default function ProductsSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product, idx) => (
-            <div key={idx} className="product-card group cursor-pointer">
+            <div key={idx} className="product-card group cursor-pointer will-change-transform">
               <div className="relative aspect-[3/4] overflow-hidden mb-8 bg-slate-100">
-                <img 
+                <Image 
                   src={product.img} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform" 
                 />
-                <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors duration-500" />
+                <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors duration-500 will-change-transform" />
                 <div className="absolute top-6 left-6">
                     <span className="bg-white/80 backdrop-blur-md px-4 py-1.5 text-[9px] uppercase tracking-widest font-bold text-[#0f172a]">
                         {product.category}
