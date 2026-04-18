@@ -21,14 +21,15 @@ export default function Products() {
       syncTouch: true,
     });
     
-    gsap.ticker.add((time) => {
+    const updateLenis = (time) => {
       lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
+    };
+    
+    gsap.ticker.add(updateLenis);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+      gsap.ticker.remove(updateLenis);
     };
   }, []);
 

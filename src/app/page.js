@@ -33,17 +33,16 @@ export default function Home() {
 
     lenis.on('scroll', ScrollTrigger.update);
 
-    // Sync Lenis perfectly with GSAP ticker
-    gsap.ticker.add((time) => {
+    // Sync Lenis perfectly with GSAP ticker using a named function reference
+    const updateLenis = (time) => {
       lenis.raf(time * 1000);
-    });
+    };
 
-    // Disable GSAP lag smoothing to avoid jumps during heavy scroll
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.add(updateLenis);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+      gsap.ticker.remove(updateLenis);
     };
   }, []);
 
