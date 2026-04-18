@@ -243,20 +243,18 @@ export default function Home() {
       <ProductsSection />
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300;1,700&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
-        
         ::-webkit-scrollbar { display: none; }
         
         body {
           scrollbar-width: none;
           background: #000;
           overflow-x: hidden;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: var(--font-plus-jakarta-sans), sans-serif;
         }
         
-        .font-display { font-family: 'Syne', sans-serif; }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-        .font-main { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-display { font-family: var(--font-syne), sans-serif; }
+        .font-serif { font-family: var(--font-cormorant-garamond), serif; }
+        .font-main { font-family: var(--font-plus-jakarta-sans), sans-serif; }
 
         ::selection { background: #000; color: #fff; }
 
