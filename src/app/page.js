@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -8,11 +8,18 @@ import Lenis from 'lenis';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { Menu, X } from 'lucide-react';
 
-const AboutSection = dynamic(() => import('@/components/AboutSection'));
 const ProductsSection = dynamic(() => import('@/components/ProductsSection'));
+const AboutIntroSection = dynamic(() => import('@/components/AboutIntroSection'));
+const VisionMissionSection = dynamic(() => import('@/components/VisionMissionSection'));
+const StatsSection = dynamic(() => import('@/components/StatsSection'));
+const SectionDivider = dynamic(() => import('@/components/SectionDivider'));
+const Footer = dynamic(() => import('@/components/Footer'));
+const Navbar = dynamic(() => import('@/components/Navbar'));
 
 export default function Home() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const containerRef = useRef(null);
   const topImageRef = useRef(null);
   const introContentRef = useRef(null);
@@ -133,9 +140,8 @@ export default function Home() {
         "-=0.7"
       );
 
-      // Navbar theme switch - using global selector since it's outside this container's scope
       ScrollTrigger.create({
-        trigger: "#about-us",
+        trigger: "#our-products",
         start: "top 10%",
         onEnter: () => {
           document.getElementById('main-nav')?.classList.add('nav-light');
@@ -155,29 +161,73 @@ export default function Home() {
     <div className="bg-[#020202] text-white selection:bg-black selection:text-white font-main leading-relaxed antialiased overflow-x-hidden">
       <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
-      <nav id="main-nav" className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-500 text-white">
-        <Link href="/" className="group">
-          <Image
-            src="/logo-2.png"
-            alt="Quartz Logo"
-            width={120}
-            height={40}
-            priority
-            className="h-10 md:h-14 w-auto object-contain transition-all duration-500 nav-logo-img"
-          />
-        </Link>
-        <div className="flex gap-8 items-center nav-links">
-          <Link href="/our-products" className="text-xs uppercase tracking-[0.2em] font-bold hover:opacity-60 transition-opacity text-white">Products</Link>
-          <Link href="/about-us" className="text-xs uppercase tracking-[0.2em] font-bold hover:opacity-60 transition-opacity text-white">About</Link>
-        </div>
-      </nav>
-
       <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black">
         <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
           <section
             ref={heroSectionRef}
             className="relative w-full h-full flex flex-col items-center justify-center text-center px-4 will-change-transform bg-black overflow-hidden"
           >
+            {/* IN-HERO NAVIGATION ITEMS */}
+            <div className="absolute top-0 left-0 w-full flex justify-between items-center pt-16 pb-8 px-8 md:px-16 lg:px-24 z-[100]">
+              <Link href="/" className="group relative z-[101]">
+                <Image
+                  src="/logo-2.png"
+                  alt="Quartz Logo"
+                  width={140}
+                  height={45}
+                  priority
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              </Link>
+
+              {/* Desktop Menu */}
+              <div className="hidden md:flex gap-12 items-center">
+                {[
+                  { name: 'Home', href: '/' },
+                  { name: 'Products', href: '/our-products' },
+                  { name: 'About', href: '/about-us' },
+                  { name: 'Contact', href: '/contact' }
+                ].map((item) => (
+                  <Link 
+                    key={item.name} 
+                    href={item.href}
+                    className="text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.4em] text-white hover:opacity-60 transition-opacity"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Mobile Toggle */}
+              <button 
+                className="md:hidden relative z-[101] text-white p-2"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+
+              {/* Mobile Menu Overlay */}
+              <div className={`fixed inset-0 bg-[#0f172a] z-[100] transition-transform duration-500 ease-in-out flex flex-col items-center justify-center gap-10 md:hidden ${
+                isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
+              }`}>
+                {[
+                  { name: 'Home', href: '/' },
+                  { name: 'Products', href: '/our-products' },
+                  { name: 'About', href: '/about-us' },
+                  { name: 'Contact', href: '/contact' }
+                ].map((item) => (
+                  <Link 
+                    key={item.name} 
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-2xl font-serif font-bold uppercase tracking-[0.3em] text-white hover:text-[#0284c7] transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             {/* Using next/image for hero_updated2 instead of css bg-image for smoother scale transforms on mobile */}
             <Image 
               src="/hero_updated2.jpeg"
@@ -235,7 +285,7 @@ export default function Home() {
           >
             <div className="w-full h-full relative max-w-[1400px] mx-auto">
               <div className="absolute top-[22%] left-[5%] md:top-[25%] md:left-[10%] hero-title">
-                <span className="block text-6xl md:text-[11rem] font-serif font-black tracking-tighter leading-none drop-shadow-2xl">
+                <span className="block text-6xl md:text-[6rem] font-serif font-black tracking-tighter leading-none drop-shadow-2xl">
                   Quartz
                 </span>
               </div>
@@ -250,8 +300,12 @@ export default function Home() {
         </div>
       </div>
 
-      <AboutSection />
+      <AboutIntroSection />
+      <VisionMissionSection />
+      <StatsSection />
+      <SectionDivider />
       <ProductsSection />
+      <Footer />
 
       <style jsx global>{`
         ::-webkit-scrollbar { display: none; }
@@ -260,12 +314,12 @@ export default function Home() {
           scrollbar-width: none;
           background: #000;
           overflow-x: hidden;
-          font-family: var(--font-plus-jakarta-sans), sans-serif;
+          font-family: var(--font-poppins), sans-serif;
         }
         
-        .font-display { font-family: var(--font-syne), sans-serif; }
-        .font-serif { font-family: var(--font-cormorant-garamond), serif; }
-        .font-main { font-family: var(--font-plus-jakarta-sans), sans-serif; }
+        .font-display { font-family: var(--font-poppins), sans-serif; }
+        .font-serif { font-family: var(--font-poppins), sans-serif; }
+        .font-main { font-family: var(--font-poppins), sans-serif; }
 
         ::selection { background: #000; color: #fff; }
 

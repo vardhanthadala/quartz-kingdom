@@ -7,8 +7,51 @@ import Lenis from 'lenis';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowRight, Star } from 'lucide-react';
 
-const ProductsSection = dynamic(() => import('@/components/ProductsSection'));
+gsap.registerPlugin(ScrollTrigger);
+
+const Footer = dynamic(() => import('@/components/Footer'));
+const Navbar = dynamic(() => import('@/components/Navbar'));
+
+const products = [
+  {
+    name: 'Mica Quartz - A1 Grade',
+    grade: 'A1 Grade',
+    description: 'Our Mica Quartz is of A1 Grade quality, known for its exceptional purity and performance. The high mica content enhances its thermal and electrical insulation capabilities, making it perfect for use in electronics, ceramics, and other specialized industries.',
+    features: ['Thermal Insulation', 'Electrical Insulation', 'Exceptional Purity'],
+    image: '/products/product1.png'
+  },
+  {
+    name: 'Quartz Granular - A1 Grade',
+    grade: 'A1 Grade',
+    description: 'Meticulously processed to ensure consistent granule size and purity. Widely used in applications requiring high strength and durability, such as construction, glass manufacturing, and water filtration systems.',
+    features: ['High Strength', 'Consistent Granule Size', 'Structural Durability'],
+    image: '/products/product2.png'
+  },
+  {
+    name: 'Quartz Glassy - A1 Grade',
+    grade: 'A1 Grade',
+    description: 'Distinguished by brilliant transparency and high purity levels. Essential for applications demanding exceptional clarity and chemical inertness, such as optical devices and laboratory equipment.',
+    features: ['Brilliant Transparency', 'Chemical Inertness', 'Refined Clarity'],
+    image: '/products/product3.png'
+  },
+  {
+    name: 'Quartz Powder - B Grade',
+    grade: 'B Grade',
+    description: 'A versatile product suitable for various industrial uses where high purity is not a critical factor. Widely utilized in the manufacturing of paints, coatings, adhesives, and ceramics.',
+    features: ['Industrial Consistency', 'Cost-Effective', 'Fine Texture'],
+    image: '/products/product4.png'
+  },
+  {
+    name: 'Black Galaxy Granite',
+    grade: 'Premium',
+    description: 'A versatile product suitable for various industrial uses. Available in Golden Spark big size (180cm – 300cm) and small size (100cm – 180cm). Perfect for architectural masterpieces.',
+    features: ['Golden Spark particles', 'Elite Durability', 'Custom Sizing'],
+    image: '/products/product5.png'
+  }
+];
 
 export default function Products() {
   const containerRef = useRef(null);
@@ -34,90 +77,121 @@ export default function Products() {
   }, []);
 
   useGSAP(() => {
+    // Reveal text
     gsap.fromTo(
-      ".char-reveal",
-      { y: 100, opacity: 0, skewY: 7 },
-      {
-        y: 0,
-        opacity: 1,
-        skewY: 0,
-        duration: 1.5,
-        stagger: 0.1,
-        ease: 'expo.out',
-      }
+      ".hero-reveal",
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: 'power3.out' }
     );
 
-    // Navbar theme switch
-    ScrollTrigger.create({
-      trigger: "#our-products",
-      start: "top 10%",
-      onEnter: () => {
-        document.getElementById('main-nav')?.classList.add('nav-light');
-      },
-      onLeaveBack: () => {
-        document.getElementById('main-nav')?.classList.remove('nav-light');
-      }
+    // Reveal items
+    gsap.utils.toArray('.product-item').forEach((item) => {
+      gsap.fromTo(item, 
+        { y: 50, opacity: 0 },
+        { 
+          y: 0, opacity: 1, 
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 85%',
+          }
+        }
+      );
     });
 
   }, { scope: containerRef });
 
   return (
     <div ref={containerRef} className="bg-white text-[#0f172a] selection:bg-black selection:text-white font-main leading-relaxed antialiased overflow-x-hidden min-h-screen">
-      <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      <nav id="main-nav" className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-500 text-white">
-        <Link href="/" className="group">
-          <Image
-            src="/logo-2.png"
-            alt="Quartz Logo"
-            width={120}
-            height={40}
-            priority
-            className="h-10 md:h-14 w-auto object-contain transition-all duration-500 nav-logo-img"
-          />
-        </Link>
-        <div className="flex gap-8 items-center nav-links">
-          <Link href="/our-products" className="text-xs uppercase tracking-[0.2em] font-bold hover:opacity-60 transition-opacity border-b border-black md:border-transparent text-white">Products</Link>
-          <Link href="/about-us" className="text-xs uppercase tracking-[0.2em] font-bold hover:opacity-60 transition-opacity text-white">About</Link>
-        </div>
-      </nav>
+      <Navbar className="nav-light" />
 
-      <section id="products-hero" className="relative h-[70vh] w-full flex items-center justify-center overflow-hidden bg-black">
-        <div className="absolute inset-0">
-          <Image 
-            src="/hero_updated1.jpeg" 
-            alt="Products Hero" 
-            fill
-            sizes="100vw"
-            priority
-            className="w-full h-full object-cover will-change-transform" 
-          />
-          <div className="absolute inset-0 bg-black/70 pointer-events-none" />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-5xl">
-          <h1 className="text-5xl sm:text-7xl md:text-9xl font-serif font-light leading-none tracking-tighter text-white overflow-hidden">
-            <span className="inline-block char-reveal">Our</span> <br />
-            <span className="inline-block char-reveal italic font-bold">Materials</span>
-          </h1>
+      {/* LIGHT editorial hero */}
+      <section className="relative min-h-[65vh] w-full flex items-center justify-center pt-[40px] md:pt-0 px-6 md:px-12 lg:px-24 bg-[#fafafa]">
+        <div className="relative z-10 max-w-7xl w-full flex flex-col md:flex-row items-end justify-between gap-12 text-center md:text-left">
+          <div className="flex-1 w-full">
+            <span className="hero-reveal block text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-slate-400 mb-6 mt-12 md:mt-0">— OUR PRODUCTS</span>
+            <h1 className="hero-reveal text-5xl md:text-8xl lg:text-9xl font-serif font-light leading-[0.8] tracking-tighter mb-8 italic">
+              Quartz <span className="font-bold">Kingdom</span>
+            </h1>
+          </div>
+           <div className="max-w-md pb-4">
+              <p className="hero-reveal text-slate-500 font-light text-base md:text-lg leading-relaxed">
+                Priding ourselves on delivering the highest quality quartz products to meet the diverse needs of our clients. Our commitment to excellence ensures our products stand out in the global market.
+              </p>
+           </div>
         </div>
       </section>
 
-      <ProductsSection />
+      {/* Detailed Products List */}
+      <section className="py-24 px-6 md:px-12 lg:px-24">
+        <div className="max-w-7xl mx-auto flex flex-col gap-32">
+          {products.map((product, idx) => (
+            <div key={idx} className="product-item group flex flex-col md:flex-row gap-12 md:gap-16 items-start lg:items-center">
+              
+              {/* MOBILE ONLY HEADER: Name first */}
+              <div className="md:hidden w-full space-y-4">
+                <div className="flex items-center gap-4">
+                  <span className="text-3xl font-serif text-[#0f172a]/10 italic">0{idx + 1}</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0284c7]">{product.grade}</span>
+                </div>
+                <h2 className="text-4xl font-serif font-bold tracking-tight text-[#0f172a]">
+                  {product.name}
+                </h2>
+              </div>
+
+              {/* IMAGE: Under name on mobile, Right side on md+ */}
+              <div className="w-full md:w-[40%] lg:w-2/5 aspect-square relative rounded-full overflow-hidden bg-white border-8 border-[#f1f5f9] shadow-sm transition-all duration-700 group-hover:shadow-2xl md:order-2 flex-shrink-0">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-105"
+                />
+              </div>
+
+              {/* CONTENT: Bottom on mobile, Left side on md+ */}
+              <div className="flex-1 space-y-8 md:order-1">
+                <div className="hidden md:flex items-center gap-4">
+                  <span className="text-4xl font-serif text-[#0f172a]/10 italic">0{idx + 1}</span>
+                  <div className="h-[1px] w-24 bg-[#f1f5f9]" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0284c7]">{product.grade}</span>
+                </div>
+
+                <h2 className="hidden md:block text-4xl md:text-5xl lg:text-7xl font-serif font-bold tracking-tight text-[#0f172a]">
+                  {product.name}
+                </h2>
+
+                <p className="text-slate-500 text-base md:text-lg font-light leading-relaxed max-w-2xl">
+                  {product.description}
+                </p>
+
+                <ul className="flex flex-wrap gap-x-8 gap-y-4">
+                  {product.features.map(f => (
+                    <li key={f} className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                      <Star size={12} className="text-[#0284c7]" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest group-hover:gap-8 transition-all duration-500">
+                  Request Quality Report <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Footer />
 
       <style jsx global>{`
         ::-webkit-scrollbar { display: none; }
-        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: var(--font-plus-jakarta-sans), sans-serif; }
-        .font-display { font-family: var(--font-syne), sans-serif; }
-        .font-serif { font-family: var(--font-cormorant-garamond), serif; }
-        .font-main { font-family: var(--font-plus-jakarta-sans), sans-serif; }
-
-        #main-nav { color: #ffffff; }
-        #main-nav .nav-logo-img { filter: none; }
-        #main-nav .nav-links a { color: #ffffff; }
-
-        .nav-light { color: #000000 !important; }
-        .nav-light .nav-logo-img { filter: invert(1) brightness(0); }
-        .nav-light .nav-links a { color: #000000 !important; }
+        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: var(--font-poppins), sans-serif; }
+        .font-display { font-family: var(--font-poppins), sans-serif; }
+        .font-serif { font-family: var(--font-poppins), sans-serif; }
+        .font-main { font-family: var(--font-poppins), sans-serif; }
       `}</style>
     </div>
   );

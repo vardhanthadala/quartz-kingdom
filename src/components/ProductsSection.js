@@ -58,7 +58,7 @@ export default function ProductsSection() {
     <section 
       id="our-products"
       ref={containerRef}
-      className="relative py-32 md:py-64 px-6 md:px-12 bg-white text-[#0f172a] overflow-hidden"
+      className="relative py-32 md:py-34 px-6 md:px-12 bg-white text-[#0f172a] overflow-hidden"
     >
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_bottom_right,#f0fdf4_0%,transparent_50%),radial-gradient(circle_at_top_left,#e0f2fe_0%,transparent_50%)]"></div>
 

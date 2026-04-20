@@ -9,6 +9,8 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
 const AboutSection = dynamic(() => import('@/components/AboutSection'));
+const Footer = dynamic(() => import('@/components/Footer'));
+const Navbar = dynamic(() => import('@/components/Navbar'));
 
 export default function AboutUs() {
   const containerRef = useRef(null);
@@ -54,22 +56,7 @@ export default function AboutUs() {
     <div ref={containerRef} className="bg-white text-[#0f172a] selection:bg-black selection:text-white font-main leading-relaxed antialiased overflow-x-hidden min-h-screen">
       <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
-      <nav id="main-nav" className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-500 text-white">
-        <Link href="/" className="group">
-          <Image
-            src="/logo-2.png"
-            alt="Quartz Logo"
-            width={120}
-            height={40}
-            priority
-            className="h-10 md:h-14 w-auto object-contain transition-all duration-500 nav-logo-img"
-          />
-        </Link>
-        <div className="flex gap-8 items-center nav-links">
-          <Link href="/our-products" className="text-xs uppercase tracking-[0.2em] font-bold hover:opacity-60 transition-opacity text-white">Products</Link>
-          <Link href="/about-us" className="text-xs uppercase tracking-[0.2em] font-bold hover:opacity-60 transition-opacity border-b border-black md:border-transparent text-white">About</Link>
-        </div>
-      </nav>
+      <Navbar />
 
       <section id="hero_updated2" ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
@@ -93,21 +80,14 @@ export default function AboutUs() {
       </section>
 
       <AboutSection />
+      <Footer />
 
       <style jsx global>{`
         ::-webkit-scrollbar { display: none; }
-        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: var(--font-plus-jakarta-sans), sans-serif; }
-        .font-display { font-family: var(--font-syne), sans-serif; }
-        .font-serif { font-family: var(--font-cormorant-garamond), serif; }
-        .font-main { font-family: var(--font-plus-jakarta-sans), sans-serif; }
-
-        #main-nav { color: #ffffff; }
-        #main-nav .nav-logo-img { filter: none; }
-        #main-nav .nav-links a { color: #ffffff; }
-
-        .nav-light { color: #000000 !important; }
-        .nav-light .nav-logo-img { filter: invert(1) brightness(0); }
-        .nav-light .nav-links a { color: #000000 !important; }
+        body { scrollbar-width: none; background: #fff; overflow-x: hidden; font-family: var(--font-poppins), sans-serif; }
+        .font-display { font-family: var(--font-poppins), sans-serif; }
+        .font-serif { font-family: var(--font-poppins), sans-serif; }
+        .font-main { font-family: var(--font-poppins), sans-serif; }
       `}</style>
     </div>
   );
