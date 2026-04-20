@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -24,7 +24,7 @@ const productsData = [
     grade: 'A1 Grade',
     description: 'Our Mica Quartz is of A1 Grade quality, known for its exceptional purity and performance. Highly sought after for thermal and electrical insulation, perfect for use in electronics, ceramics, and other specialized industries.',
     pills: ['Thermal Insulation', 'Electrical Grade'],
-    bg: '#f0faf6',
+    bg: '#A7867A',
     image: '/products/product1.jpg'
   },
   {
@@ -33,7 +33,7 @@ const productsData = [
     grade: 'A1 Grade',
     description: 'Meticulously processed to ensure consistent granule size and purity. Widely used in applications requiring high strength and durability, such as construction, glass manufacturing, and water filtration systems.',
     pills: ['High Durability', 'Water Filtration'],
-    bg: '#f0f7ff',
+    bg: '#1BAB9D',
     image: '/products/product2.jpg'
   },
   {
@@ -42,7 +42,7 @@ const productsData = [
     grade: 'A1 Grade',
     description: 'Distinguished by brilliant transparency and high purity levels. Essential for applications demanding exceptional clarity and chemical inertness, such as optical devices, high-performance glass, and laboratory equipment.',
     pills: ['Optical Grade', 'Chemical Inert'],
-    bg: '#f5fff8',
+    bg: '#306fa7ff',
     image: '/products/product3.jpg'
   },
   {
@@ -51,7 +51,7 @@ const productsData = [
     grade: 'B Grade',
     description: 'A versatile product suitable for various industrial uses. Widely utilized in the manufacturing of paints, coatings, adhesives, and ceramics. Offers excellent consistency and performance at scale.',
     pills: ['Multi-Industry', 'Cost Effective'],
-    bg: '#fff8f0',
+    bg: '#bb596eff',
     image: '/products/product4.jpg'
   },
   {
@@ -60,8 +60,7 @@ const productsData = [
     grade: 'Industrial',
     description: 'A versatile granite product suitable for various industrial uses where high purity is not a critical factor. Available in Golden Spark big size 180cm–300cm and small size 100cm–180cm.',
     pills: ['100–300cm Sizes', 'Golden Spark'],
-    bg: '#1a1a1a', 
-    isDark: true,
+    bg: '#9ad035ff', 
     image: '/products/product5.jpg'
   }
 ];
@@ -69,15 +68,15 @@ const productsData = [
 export default function ProductsPage() {
   const containerRef = useRef(null);
   const heroRef = useRef(null);
-  const sectionsRef = useRef([]);
+  const horizontalRef = useRef(null);
   const canvasRef = useRef(null);
-  const [activeSegment, setActiveSegment] = useState(0);
 
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),  
       smoothWheel: true,
+      syncTouch: true
     });
     const updateLenis = (time) => lenis.raf(time * 1000);
     gsap.ticker.add(updateLenis);
@@ -92,299 +91,177 @@ export default function ProductsPage() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let particles = [];
+    let animId;
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
     class Particle {
-      constructor() {
+      constructor() { this.reset(); }
+      reset() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height + Math.random() * 100;
         this.size = Math.random() * 2 + 0.5;
         this.speedY = Math.random() * 1 + 0.5;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.opacity = Math.random() * 0.3 + 0.1;
       }
-      update() {
-        this.y -= this.speedY;
-        if (this.y < -10) this.y = canvas.height + 10;
-      }
+      update() { this.y -= this.speedY; if (this.y < -10) this.reset(); }
       draw() {
         ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
       }
     }
-    const init = () => {
-      particles = [];
-      for (let i = 0; i < 50; i++) particles.push(new Particle());
-    };
+    resize();
+    particles = Array.from({ length: 40 }, () => new Particle());
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(animate);
+      animId = requestAnimationFrame(animate);
     };
-    resize();
-    init();
     animate();
     window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId); };
   }, []);
 
   useGSAP(() => {
-    const heroTl = gsap.timeline();
-    heroTl.from('.hero-label', { y: 30, opacity: 0, duration: 1, ease: 'power3.out' })
-      .from('.hero-title span', { y: 100, stagger: 0.1, duration: 1.2, ease: 'expo.out' }, '-=0.5')
-      .from('.hero-sub', { opacity: 0, scale: 0.95, duration: 1 }, '-=0.8')
-      .from('.hero-cta', { opacity: 0, y: 20, duration: 1 }, '-=0.5');
+    gsap.timeline()
+      .from('.hero-label', { y: 30, opacity: 0, duration: 1, ease: 'power3.out' })
+      .from('.hero-title span', { y: 100, stagger: 0.1, duration: 1.2, ease: 'expo.out' }, '-=0.5');
 
-    gsap.to('.hero-bg-img', {
-      scale: 1.15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
+    let mm = gsap.matchMedia();
 
-    gsap.to(heroRef.current, {
-      scale: 0.85,
-      opacity: 0.8,
-      borderRadius: '40px',
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: 'bottom bottom',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 1025px)", () => {
-      sectionsRef.current.forEach((section, index) => {
-        if (!section) return;
-        const leftPanel = section.querySelector('.product-left');
-        const img = leftPanel.querySelector('img');
-        const rightPanel = section.querySelector('.product-right');
-        const ghostNum = section.querySelector('.ghost-num');
-        const lines = rightPanel.querySelectorAll('.animate-line');
-        const pills = rightPanel.querySelectorAll('.stat-pill');
-
-        const sectionTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: '+=100%',
-            scrub: 1,
-            pin: true,
-            onToggle: self => self.isActive && setActiveSegment(index + 1)
-          }
-        });
-
-        sectionTl.fromTo(img,
-          { scale: 1.25, clipPath: 'inset(0 100% 0 0)' },
-          { scale: 1, clipPath: 'inset(0 0% 0 0)', duration: 2, ease: 'power2.inOut' }
-        )
-          .from(ghostNum, { x: 50, opacity: 0, duration: 1 }, '-=1')
-          .from(lines, { y: 60, opacity: 0, stagger: 0.15, duration: 1 }, '-=1.2')
-          .from(pills, { x: -30, opacity: 0, stagger: 0.1, duration: 0.8 }, '-=0.8');
-      });
-
-      gsap.to('.progress-line-fill', {
-        height: '100%',
-        ease: 'none',
+    mm.add("(min-width: 1024px)", () => {
+      const pinTl = gsap.timeline({
         scrollTrigger: {
-          trigger: '.products-container',
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true
-        }
+          trigger: ".horizontal-container",
+          pin: true,
+          start: "top top",
+          end: () => `+=${horizontalRef.current.scrollWidth - window.innerWidth}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      pinTl.to(horizontalRef.current, {
+        x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
+        ease: "none",
+      });
+
+      gsap.utils.toArray('.product-card').forEach((card) => {
+          gsap.from(card.querySelector('.card-content'), {
+              y: 40,
+              opacity: 0,
+              duration: 1,
+              scrollTrigger: {
+                  trigger: card,
+                  containerAnimation: pinTl,
+                  start: "left center",
+                  toggleActions: "play none none reverse"
+              }
+          });
       });
     });
 
-    // Mobile fallback animations
-    mm.add("(max-width: 1024px)", () => {
-      sectionsRef.current.forEach((section) => {
-        if (!section) return;
-        gsap.from(section.querySelectorAll('.animate-line'), {
-          y: 30,
-          opacity: 0,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%'
-          }
+    mm.add("(max-width: 1023px)", () => {
+        gsap.utils.toArray('.product-card').forEach((card) => {
+            gsap.from(card, {
+                opacity: 0,
+                y: 30,
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                }
+            });
         });
-      });
     });
 
-    gsap.from('.outro-band', {
-      y: 80,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: '.outro-band',
-        start: 'top 90%',
-        toggleActions: 'play none none reverse'
-      }
-    });
+    return () => mm.revert();
   }, { scope: containerRef });
-
-  const scrollToSection = (index) => {
-    gsap.to(window, {
-      duration: 1.5,
-      scrollTo: sectionsRef.current[index].offsetTop,
-      ease: 'power3.inOut'
-    });
-  };
 
   return (
     <div ref={containerRef} className="bg-white selection:bg-[#1D9E75] selection:text-white font-sans antialiased overflow-x-hidden">
-      <Navbar />
+      <Navbar threshold={20} />
 
-      {/* HERO SECTION */}
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0F2027] z-10">
         <div className="absolute inset-0 z-0">
-          <Image
-            src="/hero_updated1.png"
-            alt="Premium Texture"
-            fill
-            priority
-            className="hero-bg-img object-cover opacity-100 transition-transform duration-100 ease-out"
-          />
-          <div className="absolute inset-0 bg-transparent z-1" />
+          <Image src="/hero_updated1.png" alt="Quartz Hero" fill priority className="hero-bg-img object-cover opacity-100" />
+          <div className="absolute inset-0 bg-transparent z-[1]" />
           <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-[2]" />
         </div>
-
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <span className="hero-label block text-[#9FE1CB] text-xs font-medium tracking-[0.4em] mb-6 uppercase">
-            — OUR PRODUCTS
-          </span>
+          <span className="hero-label block text-[#9FE1CB] text-xs font-medium tracking-[0.4em] mb-6 uppercase">— OUR PRODUCTS</span>
           <h1 className="hero-title text-white text-5xl md:text-7xl lg:text-8xl font-medium leading-[0.9] tracking-tighter uppercase">
             <span className="inline-block overflow-hidden">PURE </span>
-            <span className="inline-block italic text-transparent stroke-text">QUARTZ.</span>
+            <span className="inline-block italic text-transparent font-outline">QUARTZ.</span>
           </h1>
-          <p className="hero-sub text-white/60 text-lg md:text-xl mt-8 font-light max-w-xl mx-auto">
-            Sourced from nature. Engineered for excellence.
-          </p>
-          <div className="hero-cta mt-12">
-            <button className="group relative bg-[#1D9E75] text-white px-8 py-4 rounded-full font-medium uppercase tracking-widest text-[10px] transition-all hover:bg-[#158060] overflow-hidden">
-              <span className="relative z-10">Explore Products ↓</span>
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              <div className="absolute -inset-1 rounded-full border border-[#1D9E75] opacity-0 group-hover:opacity-100 animate-pulse" />
-            </button>
-          </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-white/30 animate-bounce">
-          <ChevronDown size={20} />
+          <p className="hero-sub text-white/60 text-lg md:text-xl mt-8 font-light max-w-xl mx-auto">Precision-engineered minerals for the global high-tech supply chain.</p>
         </div>
       </section>
 
-      {/* PRODUCTS CONTAINER */}
-      <div className="products-container relative bg-white">
-        {productsData.map((prod, idx) => (
-          <section
-            key={prod.id}
-            ref={el => sectionsRef.current[idx] = el}
-            className="relative lg:h-screen w-full flex flex-col lg:flex-row overflow-hidden border-b border-slate-100 lg:border-none"
-          >
-            <div className="product-left w-full lg:w-[45%] h-[50vh] lg:h-[80vh] lg:my-[10vh] lg:ml-10 relative overflow-hidden bg-slate-50 pt-20 shadow-2xl rounded-3xl">
-              <Image 
-                src={prod.image} 
-                alt={prod.name} 
-                fill 
-                className="object-cover" 
-                quality={100}
-                priority
-                sizes="100vw"
-              />
-            </div>
-
-            <div
-              className={`product-right w-full lg:w-[50%] flex items-center justify-center p-8 md:p-20 lg:p-32 pt-32 lg:pt-0 relative transition-colors duration-1000 lg:h-[80vh] lg:my-[10vh] lg:mr-10 shadow-xl rounded-3xl`}
-              style={{ backgroundColor: prod.bg, color: prod.isDark ? 'white' : '#1a1a1a' }}
-            >
-              <div className={`ghost-num absolute top-[5%] right-[10%] text-[8rem] md:text-[12rem] lg:text-[18rem] font-bold select-none pointer-events-none transition-opacity duration-1000 ${prod.isDark ? 'text-white opacity-[0.03]' : 'text-[#1D9E75] opacity-[0.06]'}`}>
-                {prod.id}
-              </div>
-
-              <div className="relative z-10 w-full max-w-lg">
-                <span className="animate-line block text-[#1D9E75] text-[10px] font-bold tracking-[0.3em] uppercase mb-4">
-                  — {prod.grade}
-                </span>
-                <h2 className="animate-line text-4xl md:text-5xl font-bold leading-tight tracking-tighter mb-6">
-                  {prod.name}
-                </h2>
-                <p className={`animate-line text-sm md:text-base mb-10 leading-relaxed font-light ${prod.isDark ? 'text-white/70' : 'text-[#555555]'}`}>
-                  {prod.description}
-                </p>
-
-                <div className="flex flex-wrap gap-3 mb-12">
-                  {prod.pills.map((pill, pIdx) => (
-                    <div key={pIdx} className={`stat-pill px-5 py-2 rounded-full text-[9px] uppercase font-bold tracking-widest border ${prod.isDark ? 'border-white/20 bg-white/5' : 'border-black/5 bg-black/5 text-[#555555]'}`}>
-                      {pill}
-                    </div>
-                  ))}
+      {/* ── HORIZONTAL PRODUCTS SECTION ─────────────────────────────────── */}
+      <div className="horizontal-container bg-white relative overflow-hidden py-10 md:py-20">
+        <div ref={horizontalRef} className="flex h-[75vh] md:h-[80vh] w-max items-center px-4 md:px-10">
+            
+            {/* INTRO PANEL */}
+            <div className="w-[85vw] lg:w-[90vw] h-full flex items-center px-8 md:px-20 shrink-0 bg-white">
+                <div className="max-w-3xl">
+                    <span className="text-[10px] md:text-xs font-bold tracking-[0.6em] text-[#1D9E75] mb-8 block uppercase">— PRODUCT CATALOG</span>
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-[#0F2027] leading-[1.1] mb-8">
+                        Refined <span className="italic font-medium">Minerals</span>
+                    </h2>
+                    <p className="text-lg text-slate-500 font-light leading-relaxed max-w-md">
+                        Meticulously processed to meet the rigorous demands of specialized industries.
+                    </p>
                 </div>
-
-                <button className={`animate-line flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest group transition-all`}>
-                  <span className={prod.isDark ? 'text-[#9FE1CB]' : 'text-[#1D9E75]'}>Request a Quote</span>
-                  <ArrowRight size={14} className={`transition-transform group-hover:translate-x-2 ${prod.isDark ? 'text-[#9FE1CB]' : 'text-[#1D9E75]'}`} />
-                </button>
-              </div>
             </div>
-          </section>
-        ))}
 
-        {/* PROGRESS INDICATOR (Desktop Only) */}
-        <div className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-[101] flex-col items-center gap-6">
-          <div className="relative w-[2px] h-40 bg-slate-100 overflow-hidden">
-            <div className="progress-line-fill absolute top-0 left-0 w-full h-0 bg-[#1D9E75]" />
-          </div>
-          <div className="flex flex-col gap-5">
-            {productsData.map((p, i) => (
-              <button
-                key={i}
-                onClick={() => scrollToSection(i)}
-                className={`group relative w-2.5 h-2.5 rounded-full border-2 transition-all duration-500 ${activeSegment === i + 1 ? 'border-[#1D9E75] bg-[#1D9E75] scale-125' : 'border-slate-200 bg-white hover:border-[#1D9E75]'
-                  }`}
-              >
-                <span className="absolute right-8 top-1/2 -translate-y-1/2 bg-[#1a1a1a] text-white text-[9px] px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap uppercase tracking-widest font-bold">
-                  {p.name}
-                </span>
-              </button>
+            {/* PRODUCT PANELS */}
+            {productsData.map((prod, idx) => (
+                <div key={prod.id} className="product-card w-[90vw] lg:w-[95vw] h-full flex shrink-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden mx-4 shadow-2xl" style={{ backgroundColor: prod.bg }}>
+                    {/* Content Part */}
+                    <div className="w-full lg:w-[55%] flex flex-col justify-center px-8 md:px-16 card-content text-white">
+                        <span className="text-[10px] font-bold tracking-[0.4em] text-[#9FE1CB] mb-4 block uppercase">— {prod.grade}</span>
+                        <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.1] mb-6">{prod.name}</h3>
+                        <p className="text-sm md:text-base lg:text-lg font-light text-white/70 leading-relaxed max-w-lg mb-10">
+                            {prod.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-10">
+                            {prod.pills.map((p, pIdx) => (
+                                <div key={pIdx} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-[8px] uppercase font-bold tracking-widest">{p}</div>
+                            ))}
+                        </div>
+                        <Link href="/contact" className="group flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[#9FE1CB]">
+                            Enquire <ArrowRight size={14} className="transition-transform group-hover:translate-x-2" />
+                        </Link>
+                    </div>
+
+                    {/* Image Part */}
+                    <div className="hidden lg:block w-[45%] relative card-image-box">
+                        <Image src={prod.image} alt={prod.name} fill className="object-cover" quality={100} sizes="40vw" />
+                        <div className="absolute inset-0 bg-black/5"></div>
+                    </div>
+                </div>
             ))}
-          </div>
+
+            {/* OUTRO PANEL */}
+            <div className="w-[80vw] lg:w-[90vw] h-full flex flex-col items-center justify-center bg-[#0F2027] shrink-0 text-white rounded-[2rem] md:rounded-[3rem] mx-4">
+                <h2 className="text-4xl lg:text-6xl font-serif text-center italic mb-10 tracking-tight px-10 leading-tight">Ready to <span className="not-italic font-medium">Partner?</span></h2>
+                <Link href="/contact" className="px-10 py-4 bg-[#1D9E75] text-white rounded-full uppercase text-[9px] font-bold tracking-[0.4em] hover:bg-[#158060] transition-all">
+                    Contact Us
+                </Link>
+            </div>
         </div>
       </div>
-
-      {/* OUTRO SECTION */}
-      <section className="bg-[#0F2027] py-24 md:py-40 px-6 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto text-center relative z-10 outro-band">
-          <p className="mt-8 text-white/50 text-[10px] md:text-[12px] uppercase tracking-[0.8em] font-medium">Purity • Precision • Performance</p>
-          <h3 className="text-white text-3xl md:text-5xl font-bold tracking-tight mb-12">
-            Ready to source premium quartz?
-          </h3>
-          <Link href="/contact" className="inline-flex items-center gap-6 text-[#1D9E75] text-xs font-bold uppercase tracking-[0.3em] group transition-all">
-            Contact Us <ArrowRight size={18} className="transition-transform group-hover:translate-x-4" />
-          </Link>
-        </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#1D9E75]/5 blur-[120px] rounded-full pointer-events-none"></div>
-      </section>
 
       <Footer />
 
       <style jsx global>{`
         ::-webkit-scrollbar { display: none; }
-        .stroke-text {
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
-        }
-        @media (max-width: 1024px) {
-          .products-container { scroll-behavior: smooth; }
-        }
+        .font-outline { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4); }
       `}</style>
     </div>
   );
 }
+
+
