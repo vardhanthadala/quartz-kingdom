@@ -5,17 +5,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ threshold = 50, initialHidden = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > threshold);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [threshold]);
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -28,10 +28,15 @@ export default function Navbar() {
     <>
       <nav
         id="main-nav"
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black' : 'text-white'
-          }`}
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${
+          isScrolled 
+            ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black opacity-100' 
+            : initialHidden 
+              ? 'opacity-0 pointer-events-none text-white' 
+              : 'text-white opacity-100'
+        }`}
       >
-        <Link href="/" className="group relative z-[101]">
+        <Link href="/" className="group relative z-[101] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
           <Image
             src="/logo-2.png"
             alt="Quartz Logo"
@@ -44,12 +49,12 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex gap-10 items-center nav-links">
+        <div className="hidden md:flex gap-10 items-center nav-links drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="text-[10px] lg:text-xs uppercase tracking-[0.3em] font-bold hover:opacity-60 transition-opacity"
+              className="text-[10px] lg:text-xs uppercase tracking-[0.3em] font-medium hover:opacity-60 transition-opacity"
             >
               {link.name}
             </Link>

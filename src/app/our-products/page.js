@@ -247,21 +247,21 @@ export default function ProductsPage() {
       <section ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0F2027] z-10">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero_updated1.jpeg"
+            src="/hero_updated1.png"
             alt="Premium Texture"
             fill
             priority
-            className="hero-bg-img object-cover opacity-40 transition-transform duration-100 ease-out"
+            className="hero-bg-img object-cover opacity-100 transition-transform duration-100 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 z-1" />
+          <div className="absolute inset-0 bg-transparent z-1" />
           <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-[2]" />
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <span className="hero-label block text-[#9FE1CB] text-xs font-bold tracking-[0.4em] mb-6 uppercase">
+          <span className="hero-label block text-[#9FE1CB] text-xs font-medium tracking-[0.4em] mb-6 uppercase">
             — OUR PRODUCTS
           </span>
-          <h1 className="hero-title text-white text-5xl md:text-8xl lg:text-[9rem] font-bold leading-[0.9] tracking-tighter uppercase">
+          <h1 className="hero-title text-white text-5xl md:text-7xl lg:text-8xl font-medium leading-[0.9] tracking-tighter uppercase">
             <span className="inline-block overflow-hidden">PURE </span>
             <span className="inline-block italic text-transparent stroke-text">QUARTZ.</span>
           </h1>
@@ -269,7 +269,7 @@ export default function ProductsPage() {
             Sourced from nature. Engineered for excellence.
           </p>
           <div className="hero-cta mt-12">
-            <button className="group relative bg-[#1D9E75] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-[#158060] overflow-hidden">
+            <button className="group relative bg-[#1D9E75] text-white px-8 py-4 rounded-full font-medium uppercase tracking-widest text-[10px] transition-all hover:bg-[#158060] overflow-hidden">
               <span className="relative z-10">Explore Products ↓</span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               <div className="absolute -inset-1 rounded-full border border-[#1D9E75] opacity-0 group-hover:opacity-100 animate-pulse" />
@@ -363,6 +363,7 @@ export default function ProductsPage() {
       {/* OUTRO SECTION */}
       <section className="bg-[#0F2027] py-24 md:py-40 px-6 relative overflow-hidden">
         <div className="max-w-4xl mx-auto text-center relative z-10 outro-band">
+          <p className="mt-8 text-white/50 text-[10px] md:text-[12px] uppercase tracking-[0.8em] font-medium">Purity • Precision • Performance</p>
           <h3 className="text-white text-3xl md:text-5xl font-bold tracking-tight mb-12">
             Ready to source premium quartz?
           </h3>
