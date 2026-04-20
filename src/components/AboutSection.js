@@ -2,25 +2,45 @@
 
 import { useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const HOVER_COLORS = ['#1D9E75', '#38bdf8', '#4ade80', '#9FE1CB', '#2DD4BF', '#0EA5E9'];
 
 export default function AboutSection() {
   const statsRef = useRef(null);
   const containerRef = useRef(null);
+  const leftTextRef = useRef(null);
+
+  const mainSentance = "Since 1998, Quartz has been at the forefront of industrial mineral processing, bridging the gap between raw earth and high-performance technology.";
 
   useGSAP(() => {
-    // Fade in intro text
+    // Word reveal animation for the big paragraph
+    const words = gsap.utils.toArray('.word-reveal');
     gsap.fromTo(
-      ".about-text-reveal",
-      { opacity: 0, y: 30 },
+      words,
+      { 
+        opacity: 0, 
+        y: 20,
+        filter: 'blur(10px)'
+      },
       {
         opacity: 1,
         y: 0,
-        duration: 1,
+        filter: 'blur(0px)',
+        duration: 0.8,
+        stagger: 0.05,
+        ease: 'power3.out',
         scrollTrigger: {
-          trigger: ".about-text-reveal",
-          start: "top 85%",
+          trigger: leftTextRef.current,
+          start: "top 80%",
+          end: "bottom 60%",
+          scrub: 1,
         }
       }
     );
@@ -60,58 +80,85 @@ export default function AboutSection() {
     );
   }, { scope: containerRef });
 
+  const handleCharMouseEnter = (e) => {
+    const randomColor = HOVER_COLORS[Math.floor(Math.random() * HOVER_COLORS.length)];
+    e.target.style.color = randomColor;
+  };
+
+  const handleCharMouseLeave = (e) => {
+    e.target.style.color = 'inherit';
+  };
+
   return (
     <section
       id="about-us"
       ref={containerRef}
-      className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-6 md:px-12 bg-white text-[#0f172a] border-t border-slate-100"
+      className="relative pt-24 pb-20 md:pt-40 md:pb-40 px-6 md:px-12 bg-white text-[#0f172a] border-t border-slate-100 selection:bg-[#1D9E75] selection:text-white"
     >
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(circle_at_top_right,#e0f2fe_0%,transparent_50%),radial-gradient(circle_at_bottom_left,#f0fdf4_0%,transparent_50%)]"></div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-start">
-          <div>
-            <h2 className="text-xs uppercase tracking-[0.4em] text-slate-400 font-medium mb-8">Who We Are</h2>
-            <p className="about-text-reveal text-3xl md:text-5xl font-serif font-light leading-snug will-change-transform">
-              Since 1998, Quartz has been at the forefront of <span className="italic font-medium text-[#38bdf8]">industrial mineral processing</span>, bridging the gap between raw earth and high-performance technology.
-            </p>
+      <div className="max-w-[1600px] mx-auto relative z-10">
+        <div className="flex flex-col xl:flex-row gap-20 md:gap-32 items-start">
+          
+          <div ref={leftTextRef} className="w-full xl:w-[70%]">
+            <h2 className="text-xs uppercase tracking-[0.6em] text-[#1D9E75] font-bold mb-10">— WHO WE ARE</h2>
+            <div className="text-4xl md:text-6xl lg:text-7xl xl:text-[85px] font-serif font-light leading-[1.15] text-balance tracking-tighter">
+              {mainSentance.split(" ").map((word, i) => (
+                <span key={i} className="word-reveal inline-block mr-[0.3em]">
+                    {word.split("").map((char, ci) => (
+                        <span 
+                            key={ci} 
+                            onMouseEnter={handleCharMouseEnter}
+                            onMouseLeave={handleCharMouseLeave}
+                            className="inline transition-colors duration-300 cursor-default"
+                        >
+                            {char}
+                        </span>
+                    ))}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-12">
-            <p className="about-text-reveal text-slate-500 text-lg md:text-xl font-light leading-relaxed will-change-transform">
+          <div className="flex flex-col gap-16 w-full xl:w-[30%] xl:pt-24">
+            <p className="text-slate-500 text-lg md:text-xl font-light leading-relaxed border-l-2 border-[#1D9E75]/20 pl-8">
               We specialize in the extraction and refinement of premium quartz and silica, serving global industries ranging from semiconductor manufacturing to high-end architectural surfaces. Our commitment to purity is unmatched.
             </p>
 
-            <div ref={statsRef} className="grid grid-cols-2 gap-8 pt-12 border-t border-slate-100">
-              <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-medium leading-none mb-2 text-[#0f172a]">
-                  <span className="stat-count" data-target="25">15</span>+
+            <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-y-16 gap-x-8">
+              <div className="stat-item group">
+                <span className="block text-5xl md:text-7xl font-sans font-medium leading-none mb-3 text-[#0f172a] flex items-baseline">
+                  <span className="stat-count" data-target="25">15</span>
+                  <span className="text-[#1D9E75] ml-1 group-hover:translate-y-[-5px] transition-transform">+</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-medium">Years of Excellence</span>
+                <span className="text-[10px] uppercase font-bold tracking-[0.4em] text-slate-400">Years Heritage</span>
               </div>
-              <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-medium leading-none mb-2 text-[#4ade80]">
-                  <span className="stat-count" data-target="40">30</span>+
+              <div className="stat-item group">
+                <span className="block text-5xl md:text-7xl font-sans font-medium leading-none mb-3 text-[#0f172a] flex items-baseline">
+                  <span className="stat-count" data-target="40">30</span>
+                  <span className="text-[#1D9E75] ml-1 group-hover:translate-y-[-5px] transition-transform">+</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-medium">Countries Served</span>
+                <span className="text-[10px] uppercase font-bold tracking-[0.4em] text-slate-400">Global Sales</span>
               </div>
-              <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-medium leading-none mb-2 text-[#38bdf8]">
-                  <span className="stat-count" data-target="99.9">89.9</span>%
+              <div className="stat-item group">
+                <span className="block text-5xl md:text-7xl font-sans font-medium leading-none mb-3 text-[#0f172a] flex items-baseline">
+                  <span className="stat-count" data-target="99.9">89.9</span>
+                  <span className="text-[#1D9E75] ml-1 group-hover:translate-y-[-5px] transition-transform">%</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-medium">Quartz Purity</span>
+                <span className="text-[10px] uppercase font-bold tracking-[0.4em] text-slate-400">Purity Level</span>
               </div>
-              <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-medium leading-none mb-2 text-[#0f172a]">
+              <div className="stat-item group">
+                <span className="block text-5xl md:text-7xl font-sans font-medium leading-none mb-3 text-[#0f172a] flex items-baseline">
                   <span className="stat-count" data-target="12">2</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-medium">Active Mines</span>
+                <span className="text-[10px] uppercase font-bold tracking-[0.4em] text-slate-400">Active Sites</span>
               </div>
             </div>
 
-            <div className="mt-8">
-              <Link href="/about-us" className="text-xs uppercase tracking-[0.4em] font-medium border-b border-slate-200 pb-2 hover:border-[#38bdf8] transition-colors inline-block">
-                Read our full story
+            <div className="mt-4">
+              <Link href="/about-us" className="group flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.6em] text-[#1D9E75]">
+                <span>Our Heritage</span>
+                <div className="w-12 h-[1px] bg-[#1D9E75] group-hover:w-20 transition-all duration-700" />
               </Link>
             </div>
           </div>
