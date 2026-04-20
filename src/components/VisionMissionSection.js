@@ -3,80 +3,146 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Eye, Target } from 'lucide-react';
-import ElectricBorderCard from './ElectricBorderCard';
 
 export default function VisionMissionSection() {
   const containerRef = useRef(null);
 
   useGSAP(() => {
-    // Reveal full section
-    gsap.fromTo(
-      ".vm-card",
-      { opacity: 0, y: 50, scale: 0.95 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-        }
-      }
+    gsap.fromTo(".mission-vision-wrapper", 
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2, scrollTrigger: { trigger: containerRef.current, start: "top 80%" } }
     );
   }, { scope: containerRef });
 
   return (
     <section 
       ref={containerRef}
-      className="relative w-full py-24 md:py-32 px-4 sm:px-6 lg:px-12 bg-[#fafafa] overflow-hidden"
+      className="relative w-full py-24 md:py-32 px-4 sm:px-6 lg:px-12 bg-[#fafafa] flex flex-col items-center gap-20 overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.02] mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       
-      {/* Very faint background gradients */}
-      <div className="absolute top-1/4 left-0 w-[50vh] h-[50vh] bg-[#0ea5e9]/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-[50vh] h-[50vh] bg-[#22c55e]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="text-center relative z-10 max-w-2xl">
+        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#1D9E75] mb-4 block">— OUR PURPOSE</span>
+        <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#0f172a] tracking-tight italic">
+          Values that <span className="font-light not-italic text-slate-400">Define Us</span>
+        </h2>
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row gap-8 lg:gap-12">
+      <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col md:flex-row justify-center items-center gap-12 lg:gap-24">
         
-        {/* Vision Card */}
-        <div className="vm-card flex-1">
-          <ElectricBorderCard color="#0284c7">
-            <div className="w-16 h-16 rounded-full bg-[#f1f5f9] border border-[#e2e8f0] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:border-[#0284c7]/30 transition-all duration-500">
-              <Eye className="w-7 h-7 text-[#0284c7]" strokeWidth={1.5} />
-            </div>
-            
-            <h3 className="text-3xl md:text-4xl font-serif text-[#0f172a] mb-6 tracking-tight">
-              Our <span className="italic font-bold">Vision</span>
-            </h3>
-            
-            <p className="text-slate-600 font-light leading-relaxed text-base md:text-lg">
-              To redefine the future of high-grade raw materials globally. We envision an industry where purity and precision empower breakthrough technologies, architectural masterpieces, and sustainable progress, setting unparalleled benchmarks for quality and reliability.
-            </p>
-          </ElectricBorderCard>
+        {/* VISION CARD */}
+        <div className="mission-vision-wrapper">
+          <div className="wipe-card" data-content="To redefine the future of high-grade raw materials globally, empowering breakthrough technologies and sustainable progress.">
+            <span className="label font-serif italic text-[#0F2027]">OUR VISION</span>
+          </div>
         </div>
 
-        {/* Mission Card */}
-        <div className="vm-card flex-1">
-          <ElectricBorderCard color="#16a34a">
-            <div className="w-16 h-16 rounded-full bg-[#f1f5f9] border border-[#e2e8f0] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:border-[#16a34a]/30 transition-all duration-500">
-              <Target className="w-7 h-7 text-[#16a34a]" strokeWidth={1.5} />
-            </div>
-            
-            <h3 className="text-3xl md:text-4xl font-serif text-[#0f172a] mb-6 tracking-tight">
-              Our <span className="italic font-bold">Mission</span>
-            </h3>
-            
-            <p className="text-slate-600 font-light leading-relaxed text-base md:text-lg">
-              To rigorously extract and refine industrial minerals while maintaining strict environmental stewardship. We commit to consistent innovation, transparent relationships with our partners, and delivering materials that serve as the flawless foundation for tomorrow's creations.
-            </p>
-          </ElectricBorderCard>
+        {/* MISSION CARD */}
+        <div className="mission-vision-wrapper">
+          <div className="wipe-card" data-content="To rigorously refine industrial minerals while maintaining environmental stewardship and consistent innovation.">
+            <span className="label font-serif italic text-[#0F2027]">OUR MISSION</span>
+          </div>
         </div>
 
       </div>
+
+      <style jsx>{`
+        .wipe-card {
+          position: relative;
+          width: 300px;
+          height: 380px;
+          background: #ffffff !important; /* Force white background */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 15px;
+          cursor: pointer;
+          overflow: hidden;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.08); /* Stronger shadow for visibility */
+          transition: all 0.5s ease;
+          border: 1px solid rgba(0,0,0,0.05); /* Subtle border for definition */
+          z-index: 1;
+        }
+
+        .label {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: #0F2027 !important; /* Force dark color */
+          letter-spacing: -0.02em;
+          z-index: 5; /* Ensure it stays above corners */
+          transition: all 0.5s ease;
+        }
+
+        .wipe-card::before,
+        .wipe-card::after {
+          position: absolute;
+          content: "";
+          width: 25%;
+          height: 25%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #9FE1CB; /* Brand Light Green */
+          transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+          z-index: 2;
+          overflow: hidden;
+          padding: 2rem;
+          text-align: center;
+          font-size: 0.95rem;
+          font-weight: 400;
+          color: transparent;
+          line-height: 1.6;
+        }
+
+        .wipe-card::before {
+          top: 0;
+          right: 0;
+          border-radius: 0 15px 0 100%;
+        }
+
+        .wipe-card::after {
+          bottom: 0;
+          left: 0;
+          border-radius: 0 100% 0 15px;
+        }
+
+        .wipe-card:hover {
+          box-shadow: 0 40px 60px rgba(29, 158, 117, 0.15);
+          transform: translateY(-10px);
+          border-color: #1D9E75;
+        }
+
+        .wipe-card:hover .label {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+
+        .wipe-card:hover::before,
+        .wipe-card:hover::after {
+          width: 100%;
+          height: 100%;
+          border-radius: 15px;
+          background-color: #0F2027; /* Brand Dark Accent */
+        }
+
+        .wipe-card:hover::after {
+          content: attr(data-content);
+          color: #9FE1CB; /* Brand Light Green for text */
+          font-weight: 500;
+        }
+
+        .wipe-card:hover::before {
+           background-color: #ffffff;
+           /* Optionally put a small icon or secondary text in ::before on hover */
+        }
+
+        @media (max-width: 640px) {
+          .wipe-card {
+            width: 280px;
+            height: 320px;
+          }
+        }
+      `}</style>
     </section>
   );
 }

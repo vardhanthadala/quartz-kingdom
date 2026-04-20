@@ -9,6 +9,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
 const AboutSection = dynamic(() => import('@/components/AboutSection'));
+const FoundersSection = dynamic(() => import('@/components/FoundersSection'));
 const Footer = dynamic(() => import('@/components/Footer'));
 const Navbar = dynamic(() => import('@/components/Navbar'));
 
@@ -80,6 +81,7 @@ export default function AboutUs() {
       </section>
 
       <AboutSection />
+      <FoundersSection />
       <Footer />
 
       <style jsx global>{`

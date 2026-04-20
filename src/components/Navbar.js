@@ -28,7 +28,7 @@ export default function Navbar() {
     <>
       <nav
         id="main-nav"
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-6 text-black' : 'text-white'
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black' : 'text-white'
           }`}
       >
         <Link href="/" className="group relative z-[101]">
