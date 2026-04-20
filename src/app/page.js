@@ -178,9 +178,9 @@ export default function Home() {
             ref={heroSectionRef}
             className="relative w-full h-full flex flex-col items-center justify-center text-center px-4 will-change-transform bg-black overflow-hidden"
           >
-            {/* Using next/image for hero-2 instead of css bg-image for smoother scale transforms on mobile */}
+            {/* Using next/image for hero_updated2 instead of css bg-image for smoother scale transforms on mobile */}
             <Image 
-              src="/hero-2.png"
+              src="/hero_updated2.jpeg"
               alt="Hero Background"
               fill
               sizes="100vw"
@@ -219,14 +219,14 @@ export default function Home() {
         <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden origin-center">
           <Image
             ref={topImageRef}
-            src="/hero-1.png"
+            src="/hero_updated1.jpeg"
             alt="Intro"
             fill
             sizes="100vw"
             priority
             className="w-full h-full object-cover md:object-center origin-center will-change-transform"
           />
-          {/* Absolute overlay over hero-1 so we don't use heavy CSS GPU filters on the image itself */}
+          {/* Absolute overlay over hero_updated1 so we don't use heavy CSS GPU filters on the image itself */}
           <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
           <div
@@ -289,7 +289,7 @@ export default function Home() {
           color: #000000 !important;
         }
 
-        /* Hero-1 Mobile Responsiveness */
+        /* Hero_updated1 Mobile Responsiveness */
         @media (max-width: 425px) {
           .hero-title {
             font-size: 4rem !important;

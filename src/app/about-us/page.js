@@ -71,10 +71,10 @@ export default function AboutUs() {
         </div>
       </nav>
 
-      <section id="hero-2" ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+      <section id="hero_updated2" ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image 
-            src="/hero-2.png" 
+            src="/hero_updated2.jpeg" 
             alt="About Hero" 
             fill
             sizes="100vw"

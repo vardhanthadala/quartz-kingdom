@@ -85,7 +85,7 @@ export default function Products() {
       <section id="products-hero" className="relative h-[70vh] w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image 
-            src="/hero-1.png" 
+            src="/hero_updated1.jpeg" 
             alt="Products Hero" 
             fill
             sizes="100vw"
