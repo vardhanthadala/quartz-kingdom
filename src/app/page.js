@@ -19,7 +19,6 @@ const Footer = dynamic(() => import('@/components/Footer'));
 const Navbar = dynamic(() => import('@/components/Navbar'));
 
 export default function Home() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const containerRef = useRef(null);
   const topImageRef = useRef(null);
   const introContentRef = useRef(null);
@@ -160,6 +159,7 @@ export default function Home() {
   return (
     <div className="bg-[#020202] text-white selection:bg-black selection:text-white font-main leading-relaxed antialiased overflow-x-hidden">
       <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      <Navbar threshold={1000} initialHidden={true} />
 
       <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black">
         <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
@@ -167,66 +167,6 @@ export default function Home() {
             ref={heroSectionRef}
             className="relative w-full h-full flex flex-col items-center justify-center text-center px-4 will-change-transform bg-black overflow-hidden"
           >
-            {/* IN-HERO NAVIGATION ITEMS */}
-            <div className="absolute top-0 left-0 w-full flex justify-between items-center pt-16 pb-8 px-8 md:px-16 lg:px-24 z-[100]">
-              <Link href="/" className="group relative z-[101]">
-                <Image
-                  src="/logo-2.png"
-                  alt="Quartz Logo"
-                  width={140}
-                  height={45}
-                  priority
-                  className="h-10 md:h-14 w-auto object-contain"
-                />
-              </Link>
-
-              {/* Desktop Menu */}
-              <div className="hidden md:flex gap-12 items-center">
-                {[
-                  { name: 'Home', href: '/' },
-                  { name: 'Products', href: '/our-products' },
-                  { name: 'About', href: '/about-us' },
-                  { name: 'Contact', href: '/contact' }
-                ].map((item) => (
-                  <Link 
-                    key={item.name} 
-                    href={item.href}
-                    className="text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.4em] text-white hover:opacity-60 transition-opacity"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Mobile Toggle */}
-              <button 
-                className="md:hidden relative z-[101] text-white p-2"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-
-              {/* Mobile Menu Overlay */}
-              <div className={`fixed inset-0 bg-[#0f172a] z-[100] transition-transform duration-500 ease-in-out flex flex-col items-center justify-center gap-10 md:hidden ${
-                isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
-              }`}>
-                {[
-                  { name: 'Home', href: '/' },
-                  { name: 'Products', href: '/our-products' },
-                  { name: 'About', href: '/about-us' },
-                  { name: 'Contact', href: '/contact' }
-                ].map((item) => (
-                  <Link 
-                    key={item.name} 
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-2xl font-serif font-bold uppercase tracking-[0.3em] text-white hover:text-[#0284c7] transition-colors"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
 
             {/* Using next/image for hero_updated2 instead of css bg-image for smoother scale transforms on mobile */}
             <Image 
@@ -237,24 +177,23 @@ export default function Home() {
               priority
               className="object-cover"
             />
-            {/* Absolute overlay replaces expensive CSS filters */}
-            <div className="absolute inset-0 bg-black/50 z-0" />
+            {/* No overlay as per user request */}
             
             <div className="relative z-10 py-4 w-full px-4 max-w-5xl mx-auto flex flex-col items-center">
               <h1
                 ref={titleRef}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light text-white leading-[1] tracking-tight break-words w-full"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light text-white leading-[1] tracking-tight break-words w-full drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
               >
-                Delivering <span className="italic font-bold">High-Grade</span> <br />
+                Delivering <span className="italic font-medium">High-Grade</span> <br />
                 <span className="opacity-80">Industrial Minerals</span> <br />
-                <span className="italic font-bold">& Quartz</span>
+                <span className="italic font-medium">& Quartz</span>
               </h1>
             </div>
 
             <div className="relative z-10 overflow-hidden px-4">
               <p
                 ref={descRef}
-                className="mt-8 md:mt-10 text-white/40 text-[8px] md:text-[10px] max-w-xl font-bold uppercase tracking-[0.6em] font-main"
+                className="mt-8 md:mt-10 text-white/40 text-[8px] md:text-[10px] max-w-xl font-medium uppercase tracking-[0.6em] font-main"
               >
                 Precision Processed • Global Standards Since 1998
               </p>
@@ -267,17 +206,17 @@ export default function Home() {
         </div>
 
         <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden origin-center">
-          <Image
-            ref={topImageRef}
-            src="/hero_updated1.jpeg"
-            alt="Intro"
-            fill
-            sizes="100vw"
-            priority
-            className="w-full h-full object-cover md:object-center origin-center will-change-transform"
-          />
-          {/* Absolute overlay over hero_updated1 so we don't use heavy CSS GPU filters on the image itself */}
-          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+            <Image
+              ref={topImageRef}
+              src="/hero_updated1.png"
+              alt="Intro"
+              fill
+              sizes="100vw"
+              priority
+              className="w-full h-full object-cover md:object-center origin-center will-change-transform"
+            />
+            {/* Absolute overlay removed as per user request */}
+            <div className="absolute inset-0 bg-transparent pointer-events-none" />
 
           <div
             ref={introContentRef}
@@ -285,7 +224,7 @@ export default function Home() {
           >
             <div className="w-full h-full relative max-w-[1400px] mx-auto">
               <div className="absolute top-[22%] left-[5%] md:top-[25%] md:left-[10%] hero-title">
-                <span className="block text-6xl md:text-[6rem] font-serif font-black tracking-tighter leading-none drop-shadow-2xl">
+                <span className="block text-6xl md:text-[6rem] font-serif font-medium tracking-tighter leading-none drop-shadow-2xl">
                   Quartz
                 </span>
               </div>
