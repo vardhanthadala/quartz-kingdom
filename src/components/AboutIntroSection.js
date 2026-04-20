@@ -82,7 +82,7 @@ export default function AboutIntroSection() {
             alt="Premium Quartz Rock"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover will-change-transform"
+            className="object-cover will-change-transform grayscale group-hover:grayscale-0 transition-all duration-1000"
           />
           {/* Crisp overlay accent */}
           <div className="absolute bottom-4 left-4 right-4 z-20 overflow-hidden rounded-xl">

@@ -26,6 +26,24 @@ export default function AboutSection() {
     );
 
     // Stats counter animation
+    gsap.utils.toArray('.stat-count').forEach((stat) => {
+      const targetValue = parseFloat(stat.getAttribute('data-target'));
+      gsap.fromTo(
+        stat,
+        { textContent: 0 },
+        {
+          textContent: targetValue,
+          duration: 2,
+          ease: "power2.out",
+          snap: { textContent: stat.getAttribute('data-target').includes('.') ? 0.1 : 1 },
+          scrollTrigger: {
+            trigger: stat,
+            start: "top 95%",
+          }
+        }
+      );
+    });
+
     gsap.fromTo(
       ".stat-item",
       { opacity: 0, y: 20 },
@@ -46,7 +64,7 @@ export default function AboutSection() {
     <section 
       id="about-us"
       ref={containerRef}
-      className="relative py-32 md:py-64 px-6 md:px-12 bg-white text-[#0f172a] border-t border-slate-100"
+      className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-6 md:px-12 bg-white text-[#0f172a] border-t border-slate-100"
     >
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(circle_at_top_right,#e0f2fe_0%,transparent_50%),radial-gradient(circle_at_bottom_left,#f0fdf4_0%,transparent_50%)]"></div>
       
@@ -66,19 +84,27 @@ export default function AboutSection() {
             
             <div ref={statsRef} className="grid grid-cols-2 gap-8 pt-12 border-t border-slate-100">
               <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#0f172a]">25+</span>
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#0f172a]">
+                  <span className="stat-count" data-target="25">25</span>+
+                </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Years of Excellence</span>
               </div>
               <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#4ade80]">40+</span>
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#4ade80]">
+                  <span className="stat-count" data-target="40">40</span>+
+                </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Countries Served</span>
               </div>
               <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#38bdf8]">99.9%</span>
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#38bdf8]">
+                  <span className="stat-count" data-target="99.9">99.9</span>%
+                </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Quartz Purity</span>
               </div>
               <div className="stat-item will-change-transform">
-                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#0f172a]">12</span>
+                <span className="block text-4xl md:text-6xl font-display font-black leading-none mb-2 text-[#0f172a]">
+                  <span className="stat-count" data-target="12">12</span>
+                </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Active Mines</span>
               </div>
             </div>
