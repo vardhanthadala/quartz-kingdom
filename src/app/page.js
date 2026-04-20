@@ -169,7 +169,7 @@ export default function Home() {
           >
 
             {/* Using next/image for hero_updated2 instead of css bg-image for smoother scale transforms on mobile */}
-            <Image 
+            <Image
               src="/hero_updated2.jpeg"
               alt="Hero Background"
               fill
@@ -178,7 +178,7 @@ export default function Home() {
               className="object-cover"
             />
             {/* No overlay as per user request */}
-            
+
             <div className="relative z-10 py-4 w-full px-4 max-w-5xl mx-auto flex flex-col items-center">
               <h1
                 ref={titleRef}
@@ -206,34 +206,35 @@ export default function Home() {
         </div>
 
         <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden origin-center">
-            <Image
-              ref={topImageRef}
-              src="/hero_updated1.png"
-              alt="Intro"
-              fill
-              sizes="100vw"
-              priority
-              className="w-full h-full object-cover md:object-center origin-center will-change-transform"
-            />
-            {/* Absolute overlay removed as per user request */}
-            <div className="absolute inset-0 bg-transparent pointer-events-none" />
+          <Image
+            ref={topImageRef}
+            src="/hero_updated1.png"
+            alt="Intro"
+            fill
+            sizes="100vw"
+            priority
+            className="w-full h-full object-cover md:object-center origin-center will-change-transform"
+          />
+          {/* Absolute overlay removed as per user request */}
+          <div className="absolute inset-0 bg-transparent pointer-events-none" />
 
           <div
             ref={introContentRef}
             className="absolute inset-0 flex flex-col items-center justify-center origin-center px-6 will-change-transform"
           >
             <div className="w-full h-full relative max-w-[1400px] mx-auto">
-              <div className="absolute top-[22%] left-[5%] md:top-[25%] md:left-[10%] hero-title">
-                <span className="block text-6xl md:text-[6rem] font-serif font-medium tracking-tighter leading-none drop-shadow-2xl">
+              <div className="absolute top-[15%] xxs:top-[3%] xs:top-[3%] left-[8%] md:top-[25%] md:left-[10%] hero-title">
+                <span className="block text-3xl md:text-[2.5rem] lg:text-5xl xl:text-8xl font-serif font-medium tracking-tighter leading-none drop-shadow-2xl text-white">
                   Quartz
                 </span>
               </div>
-
-              <div className="absolute bottom-[22%] right-[5%] md:bottom-[25%] md:right-[10%] text-right max-w-[280px] md:max-w-md hero-tagline">
-                <span className="block text-2xl md:text-5xl font-serif font-light italic leading-tight opacity-90 tracking-tight drop-shadow-xl">
-                  holds the language of light
+              <div className="absolute top-[15%] xxs:top-[3%] xs:top-[3%] left-[52%] md:top-[25%] md:left-[70%] hero-title">
+                <span className="block text-3xl md:text-[2.5rem] lg:text-5xl xl:text-8xl font-serif font-medium tracking-tighter leading-none drop-shadow-2xl text-white">
+                  Kingdom
                 </span>
               </div>
+
+
             </div>
           </div>
         </div>
@@ -284,10 +285,6 @@ export default function Home() {
 
         /* Hero_updated1 Mobile Responsiveness */
         @media (max-width: 425px) {
-          .hero-title {
-            font-size: 4rem !important;
-            top: 25% !important;
-          }
           .hero-tagline {
             font-size: 1.5rem !important;
             top: 50% !important;
@@ -301,19 +298,12 @@ export default function Home() {
         }
 
         @media (max-width: 375px) {
-          .hero-title {
-            font-size: 3.5rem !important;
-          }
           .hero-tagline {
             font-size: 1.25rem !important;
           }
         }
 
         @media (max-width: 320px) {
-          .hero-title {
-            font-size: 3rem !important;
-            top: 28% !important;
-          }
           .hero-tagline {
             font-size: 1.1rem !important;
           }
@@ -321,9 +311,6 @@ export default function Home() {
 
         /* Medium (Tablet) Responsiveness */
         @media (min-width: 768px) and (max-width: 1024px) {
-          .hero-title {
-            font-size: 8rem !important;
-          }
           .hero-tagline {
             font-size: 3.5rem !important;
           }
