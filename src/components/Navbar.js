@@ -37,12 +37,20 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
     <>
       <nav
         id="main-nav"
-        className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-700 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${isScrolled
-            ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black opacity-100'
-            : initialHidden
-              ? 'opacity-0 pointer-events-none text-white'
-              : 'text-white opacity-100'
-          }`}
+        // className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-700 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${isScrolled
+        //     ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black opacity-100'
+        //     : initialHidden
+        //       ? 'opacity-0 pointer-events-none text-white'
+        //       : 'text-white opacity-100'
+        //   }`}
+        className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 
+px-6 md:px-12  flex justify-between items-center 
+${isScrolled
+  ? 'bg-white/80 backdrop-blur-lg shadow-sm py-3 md:py-3 xl:py-8 text-black'
+  : initialHidden
+    ? 'opacity-0 pointer-events-none text-white py-4 md:py-5'
+    : 'text-white py-4 md:py-5'
+}`}
       >
         <Link href="/" className="group relative z-[1001] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
           <Image
@@ -62,8 +70,7 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
             <Link
               key={link.name}
               href={link.href}
-              className="text-[10px] lg:text-xs uppercase tracking-[0.3em] font-medium hover:opacity-60 transition-opacity"
-            >
+className="text-[10px] md:text-xs lg:text-md xl:text-lg 2xl:text-xl uppercase tracking-[0.3em] font-medium"            >
               {link.name}
             </Link>
           ))}
@@ -79,7 +86,7 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
         </button>
 
       </nav>
-      
+
       {/* Mobile Menu Overlay */}
       <div className={`fixed inset-0 bg-white z-[999] transition-all duration-700 ease-in-out ${isOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-full opacity-0 pointer-events-none'
         } flex flex-col items-center justify-center gap-8 md:hidden`}>
