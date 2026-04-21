@@ -128,54 +128,36 @@ export default function ProductsPage() {
       .from('.hero-label', { y: 30, opacity: 0, duration: 1, ease: 'power3.out' })
       .from('.hero-title span', { y: 100, stagger: 0.1, duration: 1.2, ease: 'expo.out' }, '-=0.5');
 
-    let mm = gsap.matchMedia();
-
-    mm.add("(min-width: 1024px)", () => {
-      const pinTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".horizontal-container",
-          pin: true,
-          start: "top top",
-          end: () => `+=${horizontalRef.current.scrollWidth - window.innerWidth}`,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      pinTl.to(horizontalRef.current, {
-        x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
-        ease: "none",
-      });
-
-      gsap.utils.toArray('.product-card').forEach((card) => {
-          gsap.from(card.querySelector('.card-content'), {
-              y: 40,
-              opacity: 0,
-              duration: 1,
-              scrollTrigger: {
-                  trigger: card,
-                  containerAnimation: pinTl,
-                  start: "left center",
-                  toggleActions: "play none none reverse"
-              }
-          });
-      });
+    // Unified horizontal scroll for all screen sizes as per user request
+    const pinTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".horizontal-container",
+        pin: true,
+        start: "top top",
+        end: () => `+=${horizontalRef.current.scrollWidth - window.innerWidth}`,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
     });
 
-    mm.add("(max-width: 1023px)", () => {
-        gsap.utils.toArray('.product-card').forEach((card) => {
-            gsap.from(card, {
-                opacity: 0,
-                y: 30,
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 80%",
-                }
-            });
+    pinTl.to(horizontalRef.current, {
+      x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
+      ease: "none",
+    });
+
+    gsap.utils.toArray('.product-card').forEach((card) => {
+        gsap.from(card.querySelector('.card-content'), {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: card,
+                containerAnimation: pinTl,
+                start: "left center",
+                toggleActions: "play none none reverse"
+            }
         });
     });
-
-    return () => mm.revert();
   }, { scope: containerRef });
 
   return (
@@ -218,17 +200,17 @@ export default function ProductsPage() {
 
             {/* PRODUCT PANELS */}
             {productsData.map((prod, idx) => (
-                <div key={prod.id} className="product-card w-[90vw] lg:w-[95vw] h-full flex shrink-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden mx-4 shadow-2xl" style={{ backgroundColor: prod.bg }}>
+                <div key={prod.id} className="product-card w-[85vw] lg:w-[95vw] h-full flex flex-col lg:flex-row shrink-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden mx-4 shadow-2xl" style={{ backgroundColor: prod.bg }}>
                     {/* Content Part */}
-                    <div className="w-full lg:w-[55%] flex flex-col justify-center px-8 md:px-16 card-content text-white">
+                    <div className="w-full lg:w-[55%] flex flex-col justify-center px-8 md:px-16 py-10 lg:py-0 card-content text-white order-2 lg:order-1">
                         <span className="text-[10px] font-bold tracking-[0.4em] text-[#9FE1CB] mb-4 block uppercase">— {prod.grade}</span>
-                        <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.1] mb-6">{prod.name}</h3>
-                        <p className="text-sm md:text-base lg:text-lg font-light text-white/70 leading-relaxed max-w-lg mb-10">
+                        <h3 className="text-2xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.1] mb-4 md:mb-6">{prod.name}</h3>
+                        <p className="text-xs md:text-base lg:text-lg font-light text-white/70 leading-relaxed max-w-lg mb-6 md:mb-10 line-clamp-4 lg:line-clamp-none">
                             {prod.description}
                         </p>
-                        <div className="flex flex-wrap gap-2 mb-10">
+                        <div className="flex flex-wrap gap-2 mb-6 md:mb-10">
                             {prod.pills.map((p, pIdx) => (
-                                <div key={pIdx} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-[8px] uppercase font-bold tracking-widest">{p}</div>
+                                <div key={pIdx} className="px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[7px] md:text-[8px] uppercase font-bold tracking-widest">{p}</div>
                             ))}
                         </div>
                         <Link href="/contact" className="group flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[#9FE1CB]">
@@ -237,8 +219,8 @@ export default function ProductsPage() {
                     </div>
 
                     {/* Image Part */}
-                    <div className="hidden lg:block w-[45%] relative card-image-box">
-                        <Image src={prod.image} alt={prod.name} fill className="object-cover" quality={100} sizes="40vw" />
+                    <div className="w-full h-[40%] lg:h-full lg:w-[45%] relative card-image-box order-1 lg:order-2">
+                        <Image src={prod.image} alt={prod.name} fill className="object-cover" quality={100} sizes="(max-width: 1024px) 80vw, 40vw" />
                         <div className="absolute inset-0 bg-black/5"></div>
                     </div>
                 </div>
