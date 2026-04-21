@@ -46,10 +46,10 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
         className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 
 px-6 md:px-12  flex justify-between items-center 
 ${isScrolled
-  ? 'bg-white/80 backdrop-blur-lg shadow-sm py-3 md:py-3 xl:py-8 text-black'
+  ? 'bg-white/80 backdrop-blur-lg shadow-sm py-3 md:py-3 xl:py-6 text-black'
   : initialHidden
-    ? 'opacity-0 pointer-events-none text-white py-4 md:py-5'
-    : 'text-white py-4 md:py-5'
+    ? 'opacity-0 pointer-events-none text-white py-4 md:py-4'
+    : 'text-white py-4 md:py-4'
 }`}
       >
         <Link href="/" className="group relative z-[1001] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
