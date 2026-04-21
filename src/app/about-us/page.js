@@ -25,11 +25,11 @@ export default function AboutUs() {
       smoothWheel: true,
       syncTouch: true,
     });
-    
+
     const updateLenis = (time) => {
       lenis.raf(time * 1000);
     };
-    
+
     gsap.ticker.add(updateLenis);
 
     return () => {
@@ -61,13 +61,13 @@ export default function AboutUs() {
 
       <section id="hero_updated2" ref={heroRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
-          <Image 
-            src="/hero_updated2.jpeg" 
-            alt="About Hero" 
+          <Image
+            src="/hero_updated2.jpeg"
+            alt="About Hero"
             fill
             sizes="100vw"
             priority
-            className="w-full h-full object-cover scale-110 will-change-transform" 
+            className="w-full h-full object-cover scale-110 will-change-transform"
           />
           <div className="absolute inset-0 bg-transparent pointer-events-none" />
         </div>

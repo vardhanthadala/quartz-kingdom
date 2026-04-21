@@ -9,6 +9,15 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > threshold);
@@ -28,22 +37,21 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
     <>
       <nav
         id="main-nav"
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${
-          isScrolled 
-            ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black opacity-100' 
-            : initialHidden 
-              ? 'opacity-0 pointer-events-none text-white' 
+        className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-700 px-6 py-4 md:px-12 md:py-8 flex justify-between items-center ${isScrolled
+            ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4 md:py-[10px] text-black opacity-100'
+            : initialHidden
+              ? 'opacity-0 pointer-events-none text-white'
               : 'text-white opacity-100'
-        }`}
+          }`}
       >
-        <Link href="/" className="group relative z-[101] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+        <Link href="/" className="group relative z-[1001] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
           <Image
             src="/logo-2.png"
             alt="Quartz Logo"
             width={120}
             height={40}
             priority
-            className={`h-8 md:h-12 w-auto object-contain transition-all duration-500 nav-logo-img ${isScrolled ? 'brightness-0' : ''
+            className={`h-8 md:h-12 w-auto object-contain transition-all duration-500 nav-logo-img ${isScrolled || isOpen ? 'brightness-0' : ''
               }`}
           />
         </Link>
@@ -63,29 +71,30 @@ export default function Navbar({ threshold = 50, initialHidden = false }) {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden relative z-[101] p-2"
+          className="md:hidden relative z-[1001] p-2"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={24} className="text-black" /> : <Menu size={24} />}
         </button>
 
-        {/* Mobile Menu Overlay */}
-        <div className={`fixed inset-0 bg-white z-[100] transition-all duration-700 ease-in-out ${isOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-full opacity-0 pointer-events-none'
-          } flex flex-col items-center justify-center gap-8 md:hidden`}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="text-2xl font-serif text-[#0f172a] tracking-widest uppercase hover:text-[#0284c7] transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
-
-        </div>
       </nav>
+      
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 bg-white z-[999] transition-all duration-700 ease-in-out ${isOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-full opacity-0 pointer-events-none'
+        } flex flex-col items-center justify-center gap-8 md:hidden`}>
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+        {navLinks.map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            onClick={() => setIsOpen(false)}
+            className="text-2xl font-serif text-[#0f172a] tracking-widest uppercase hover:text-[#0284c7] transition-colors"
+          >
+            {link.name}
+          </Link>
+        ))}
+      </div>
 
       <style jsx global>{`
         /* Handling the class-based theme switcher from page.js triggers */
