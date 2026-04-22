@@ -24,8 +24,8 @@ export default function AboutSection() {
     const words = gsap.utils.toArray('.word-reveal');
     gsap.fromTo(
       words,
-      { 
-        opacity: 0, 
+      {
+        opacity: 0,
         y: 20,
         filter: 'blur(10px)'
       },
@@ -99,22 +99,22 @@ export default function AboutSection() {
 
       <div className="max-w-[1600px] mx-auto relative z-10">
         <div className="flex flex-col xl:flex-row gap-20 md:gap-32 items-start">
-          
+
           <div ref={leftTextRef} className="w-full xl:w-[70%]">
             <h2 className="text-xs uppercase tracking-[0.6em] text-[#1D9E75] font-bold mb-10">— WHO WE ARE</h2>
             <div className="text-4xl md:text-6xl lg:text-7xl xl:text-[85px] font-serif font-light leading-[1.15] text-balance tracking-tighter">
               {mainSentance.split(" ").map((word, i) => (
                 <span key={i} className="word-reveal inline-block mr-[0.3em]">
-                    {word.split("").map((char, ci) => (
-                        <span 
-                            key={ci} 
-                            onMouseEnter={handleCharMouseEnter}
-                            onMouseLeave={handleCharMouseLeave}
-                            className="inline transition-colors duration-300 cursor-default"
-                        >
-                            {char}
-                        </span>
-                    ))}
+                  {word.split("").map((char, ci) => (
+                    <span
+                      key={ci}
+                      onMouseEnter={handleCharMouseEnter}
+                      onMouseLeave={handleCharMouseLeave}
+                      className="inline transition-colors duration-300 cursor-default"
+                    >
+                      {char}
+                    </span>
+                  ))}
                 </span>
               ))}
             </div>

@@ -60,7 +60,7 @@ const productsData = [
     grade: 'Industrial',
     description: 'A versatile granite product suitable for various industrial uses where high purity is not a critical factor. Available in Golden Spark big size 180cm–300cm and small size 100cm–180cm.',
     pills: ['100–300cm Sizes', 'Golden Spark'],
-    bg: '#9ad035ff', 
+    bg: '#9ad035ff',
     image: '/products/product5.jpg'
   }
 ];
@@ -74,7 +74,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),  
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       syncTouch: true
     });
@@ -146,17 +146,17 @@ export default function ProductsPage() {
     });
 
     gsap.utils.toArray('.product-card').forEach((card) => {
-        gsap.from(card.querySelector('.card-content'), {
-            y: 40,
-            opacity: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: card,
-                containerAnimation: pinTl,
-                start: "left center",
-                toggleActions: "play none none reverse"
-            }
-        });
+      gsap.from(card.querySelector('.card-content'), {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: pinTl,
+          start: "left center",
+          toggleActions: "play none none reverse"
+        }
+      });
     });
   }, { scope: containerRef });
 
@@ -173,7 +173,7 @@ export default function ProductsPage() {
         </div>
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <span className="hero-label block text-[#9FE1CB] text-xs font-medium tracking-[0.4em] mb-6 uppercase">— OUR PRODUCTS</span>
-          <h1 className="hero-title text-white text-5xl md:text-7xl lg:text-8xl font-medium leading-[0.9] tracking-tighter uppercase">
+          <h1 className="hero-title text-white text-5xl md:text-7xl lg:text-8xl xl:text-[144px] font-medium leading-[0.9] tracking-tighter uppercase">
             <span className="inline-block overflow-hidden">PURE </span>
             <span className="inline-block italic text-transparent font-outline">QUARTZ.</span>
           </h1>
@@ -184,55 +184,55 @@ export default function ProductsPage() {
       {/* ── HORIZONTAL PRODUCTS SECTION ─────────────────────────────────── */}
       <div className="horizontal-container bg-white relative overflow-hidden py-10 md:py-20">
         <div ref={horizontalRef} className="flex h-[75vh] md:h-[80vh] w-max items-center px-4 md:px-10">
-            
-            {/* INTRO PANEL */}
-            <div className="w-[85vw] lg:w-[90vw] h-full flex items-center px-8 md:px-20 shrink-0 bg-white">
-                <div className="max-w-3xl">
-                    <span className="text-[10px] md:text-xs font-bold tracking-[0.6em] text-[#1D9E75] mb-8 block uppercase">— PRODUCT CATALOG</span>
-                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-[#0F2027] leading-[1.1] mb-8">
-                        Refined <span className="italic font-medium">Minerals</span>
-                    </h2>
-                    <p className="text-lg text-slate-500 font-light leading-relaxed max-w-md">
-                        Meticulously processed to meet the rigorous demands of specialized industries.
-                    </p>
-                </div>
+
+          {/* INTRO PANEL */}
+          <div className="w-[85vw] lg:w-[90vw] h-full flex items-center px-8 md:px-20 shrink-0 bg-white">
+            <div className="max-w-3xl">
+              <span className="text-[10px] md:text-xs font-bold tracking-[0.6em] text-[#1D9E75] mb-8 block uppercase">— PRODUCT CATALOG</span>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-[108px] font-serif font-light text-[#0F2027] leading-[1.1] mb-8">
+                Refined <span className="italic font-medium">Minerals</span>
+              </h2>
+              <p className="text-lg text-slate-500 font-light leading-relaxed max-w-md">
+                Meticulously processed to meet the rigorous demands of specialized industries.
+              </p>
             </div>
+          </div>
 
-            {/* PRODUCT PANELS */}
-            {productsData.map((prod, idx) => (
-                <div key={prod.id} className="product-card w-[85vw] lg:w-[95vw] h-full flex flex-col lg:flex-row shrink-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden mx-4 shadow-2xl" style={{ backgroundColor: prod.bg }}>
-                    {/* Content Part */}
-                    <div className="w-full lg:w-[55%] flex flex-col justify-center px-8 md:px-16 py-10 lg:py-0 card-content text-white order-2 lg:order-1">
-                        <span className="text-[10px] font-bold tracking-[0.4em] text-[#9FE1CB] mb-4 block uppercase">— {prod.grade}</span>
-                        <h3 className="text-2xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.1] mb-4 md:mb-6">{prod.name}</h3>
-                        <p className="text-xs md:text-base lg:text-lg font-light text-white/70 leading-relaxed max-w-lg mb-6 md:mb-10 line-clamp-4 lg:line-clamp-none">
-                            {prod.description}
-                        </p>
-                        <div className="flex flex-wrap gap-2 mb-6 md:mb-10">
-                            {prod.pills.map((p, pIdx) => (
-                                <div key={pIdx} className="px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[7px] md:text-[8px] uppercase font-bold tracking-widest">{p}</div>
-                            ))}
-                        </div>
-                        <Link href="/contact" className="group flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[#9FE1CB]">
-                            Enquire <ArrowRight size={14} className="transition-transform group-hover:translate-x-2" />
-                        </Link>
-                    </div>
-
-                    {/* Image Part */}
-                    <div className="w-full h-[40%] lg:h-full lg:w-[45%] relative card-image-box order-1 lg:order-2">
-                        <Image src={prod.image} alt={prod.name} fill className="object-cover" quality={100} sizes="(max-width: 1024px) 80vw, 40vw" />
-                        <div className="absolute inset-0 bg-black/5"></div>
-                    </div>
+          {/* PRODUCT PANELS */}
+          {productsData.map((prod, idx) => (
+            <div key={prod.id} className="product-card w-[85vw] lg:w-[95vw] h-full flex flex-col lg:flex-row shrink-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden mx-4 shadow-2xl" style={{ backgroundColor: prod.bg }}>
+              {/* Content Part */}
+              <div className="w-full lg:w-[55%] flex flex-col justify-center px-8 md:px-16 py-10 lg:py-0 card-content text-white order-2 lg:order-1">
+                <span className="text-[10px] font-bold tracking-[0.4em] text-[#9FE1CB] mb-4 block uppercase">— {prod.grade}</span>
+                <h3 className="text-2xl md:text-5xl lg:text-6xl xl:text-[90px] font-serif font-medium leading-[1.1] mb-4 md:mb-6">{prod.name}</h3>
+                <p className="text-xs md:text-base lg:text-lg xl:text-3xl font-light text-white/70 leading-relaxed max-w-lg mb-6 md:mb-10 line-clamp-4 lg:line-clamp-none">
+                  {prod.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6 md:mb-10">
+                  {prod.pills.map((p, pIdx) => (
+                    <div key={pIdx} className="px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[7px] md:text-[8px] uppercase font-bold tracking-widest">{p}</div>
+                  ))}
                 </div>
-            ))}
-
-            {/* OUTRO PANEL */}
-            <div className="w-[80vw] lg:w-[90vw] h-full flex flex-col items-center justify-center bg-[#0F2027] shrink-0 text-white rounded-[2rem] md:rounded-[3rem] mx-4">
-                <h2 className="text-4xl lg:text-6xl font-serif text-center italic mb-10 tracking-tight px-10 leading-tight">Ready to <span className="not-italic font-medium">Partner?</span></h2>
-                <Link href="/contact" className="px-10 py-4 bg-[#1D9E75] text-white rounded-full uppercase text-[9px] font-bold tracking-[0.4em] hover:bg-[#158060] transition-all">
-                    Contact Us
+                <Link href="/contact" className="group flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[#9FE1CB]">
+                  Enquire <ArrowRight size={14} className="transition-transform group-hover:translate-x-2" />
                 </Link>
+              </div>
+
+              {/* Image Part */}
+              <div className="w-full h-[40%] lg:h-full lg:w-[45%] relative card-image-box order-1 lg:order-2">
+                <Image src={prod.image} alt={prod.name} fill className="object-cover" quality={100} sizes="(max-width: 1024px) 80vw, 40vw" />
+                <div className="absolute inset-0 bg-black/5"></div>
+              </div>
             </div>
+          ))}
+
+          {/* OUTRO PANEL */}
+          <div className="w-[80vw] lg:w-[90vw] h-full flex flex-col items-center justify-center bg-[#0F2027] shrink-0 text-white rounded-[2rem] md:rounded-[3rem] mx-4">
+            <h2 className="text-4xl lg:text-6xl xl:text-[90px] font-serif text-center italic mb-10 tracking-tight px-10 leading-tight">Ready to <span className="not-italic font-medium">Partner?</span></h2>
+            <Link href="/contact" className="px-10 py-4 bg-[#1D9E75] text-white rounded-full uppercase text-[9px] font-bold tracking-[0.4em] hover:bg-[#158060] transition-all">
+              Contact Us
+            </Link>
+          </div>
         </div>
       </div>
 

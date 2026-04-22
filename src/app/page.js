@@ -73,6 +73,27 @@ export default function Home() {
           pin: true,
           scrub: true,
           anticipatePin: 1,
+          onUpdate: (self) => {
+            const nav = document.getElementById('main-nav');
+            if (!nav) return;
+            // hero-1 fades over first 50% of the scrub → show nav as soon as hero-2 is dominant
+            if (self.progress >= 0.5) {
+              nav.style.opacity = '1';
+              nav.style.pointerEvents = 'auto';
+              nav.classList.add('nav-light');
+            } else {
+              nav.style.opacity = '';
+              nav.style.pointerEvents = '';
+              nav.classList.remove('nav-light');
+            }
+          },
+          onLeave: () => {
+            const nav = document.getElementById('main-nav');
+            if (!nav) return;
+            nav.style.opacity = '1';
+            nav.style.pointerEvents = 'auto';
+            nav.classList.add('nav-light');
+          },
         },
       });
 
@@ -139,16 +160,6 @@ export default function Home() {
         "-=0.7"
       );
 
-      ScrollTrigger.create({
-        trigger: "#our-products",
-        start: "top 10%",
-        onEnter: () => {
-          document.getElementById('main-nav')?.classList.add('nav-light');
-        },
-        onLeaveBack: () => {
-          document.getElementById('main-nav')?.classList.remove('nav-light');
-        }
-      });
 
       return () => { };
     });
@@ -182,7 +193,7 @@ export default function Home() {
             <div className="relative z-10 py-4 w-full px-4 max-w-5xl mx-auto flex flex-col items-center">
               <h1
                 ref={titleRef}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light text-white leading-[1] tracking-tight break-words w-full drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[108px] font-serif font-light text-white leading-[1] tracking-tight break-words w-full drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
               >
                 Delivering <span className="italic font-medium">High-Grade</span> <br />
                 <span className="opacity-80">Industrial Minerals</span> <br />
@@ -224,12 +235,12 @@ export default function Home() {
           >
             <div className="w-full h-full relative max-w-[1400px] mx-auto">
               <div className="absolute top-[15%] xxs:top-[3%] xs:top-[3%] left-[8%] md:top-[25%] md:left-[10%] hero-title">
-                <span className="block text-3xl md:text-[2.5rem] lg:text-5xl xl:text-8xl font-serif font-medium tracking-tighter leading-none drop-shadow-2xl text-white">
+                <span className="block text-3xl md:text-[2.5rem] lg:text-5xl xl:text-[144px] font-serif font-medium tracking-tighter leading-none drop-shadow-2xl text-white">
                   Quartz
                 </span>
               </div>
               <div className="absolute top-[15%] xxs:top-[3%] xs:top-[3%] left-[52%] md:top-[25%] md:left-[70%] hero-title">
-                <span className="block text-3xl md:text-[2.5rem] lg:text-5xl xl:text-8xl font-serif font-medium tracking-tighter leading-none drop-shadow-2xl text-white">
+                <span className="block text-3xl md:text-[2.5rem] lg:text-5xl xl:text-[144px] font-serif font-medium tracking-tighter leading-none drop-shadow-2xl text-white">
                   Kingdom
                 </span>
               </div>
@@ -277,7 +288,7 @@ export default function Home() {
           color: #000000 !important;
         }
         .nav-light .nav-logo-img {
-          filter: invert(1) brightness(0);
+          filter: brightness(0) !important;
         }
         .nav-light .nav-links a {
           color: #000000 !important;

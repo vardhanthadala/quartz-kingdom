@@ -66,7 +66,7 @@ export default function StatsSection() {
           {stats.map((stat, idx) => (
             <div key={idx} className="stat-item flex flex-col items-center text-center px-4">
               <div className="relative mb-4">
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0f172a] to-slate-500 font-serif font-light text-5xl md:text-6xl lg:text-7xl tracking-tighter flex items-center">
+                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0f172a] to-slate-500 font-serif font-light text-5xl md:text-6xl lg:text-7xl xl:text-[108px] tracking-tighter flex items-center">
                   <span className="stat-number" data-value={stat.value}>{parseFloat(stat.value) - 10}</span>
                   <span className="text-4xl md:text-5xl font-light">{stat.suffix}</span>
                 </span>

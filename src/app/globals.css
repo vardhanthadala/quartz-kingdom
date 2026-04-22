@@ -33,3 +33,20 @@ body {
 .will-change-transform {
   will-change: transform, opacity, filter;
 }
+
+/* ── Navbar: class added by GSAP when scrolling past heroes ── */
+#main-nav.nav-light {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  color: #000000 !important;
+}
+#main-nav.nav-light .nav-logo-img {
+  filter: brightness(0) !important;
+}
+#main-nav.nav-light a,
+#main-nav.nav-light button {
+  color: #000000 !important;
+}
