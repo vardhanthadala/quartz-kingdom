@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
-export default function Navbar({ threshold = 50, initialHidden = false }) {
+export default function Navbar({ threshold = 50, initialHidden = false, darkDefault = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -49,11 +49,13 @@ px-6 md:px-12 flex justify-between items-center
 h-[60px] md:h-[55px] lg:h-[65px] xl:h-[65px] 2xl:h-[68px]
 
 ${isScrolled
-  ? 'bg-white/80 backdrop-blur-lg shadow-sm h-[56px] md:h-[58px] lg:h-[60px] xl:h-[64px] 2xl:h-[68px] text-black'
-  : initialHidden
-    ? 'opacity-0 pointer-events-none text-white'
-    : 'text-white'
-}`}
+            ? 'bg-white/80 backdrop-blur-lg shadow-sm h-[56px] md:h-[58px] lg:h-[60px] xl:h-[64px] 2xl:h-[68px] text-black'
+            : initialHidden
+              ? 'opacity-0 pointer-events-none text-white'
+              : darkDefault
+                ? 'text-black'
+                : 'text-white'
+          }`}
       >
         <Link href="/" className="group relative z-[1001] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
           <Image
@@ -62,7 +64,7 @@ ${isScrolled
             width={120}
             height={40}
             priority
-            className={`h-8 md:h-12 w-auto object-contain transition-all duration-500 nav-logo-img ${isScrolled || isOpen ? 'brightness-0' : ''
+            className={`h-8 md:h-12 w-auto object-contain transition-all duration-500 nav-logo-img ${isScrolled || isOpen || darkDefault ? 'brightness-0' : ''
               }`}
           />
         </Link>
@@ -73,7 +75,7 @@ ${isScrolled
             <Link
               key={link.name}
               href={link.href}
-className="text-[10px] md:text-xs lg:text-md xl:text-lg 2xl:text-xl uppercase tracking-[0.3em] font-medium"            >
+              className="text-[10px] md:text-xs lg:text-sm xl:text-xl 2xl:text-2xl uppercase tracking-[0.3em] font-medium"            >
               {link.name}
             </Link>
           ))}
@@ -109,11 +111,11 @@ className="text-[10px] md:text-xs lg:text-md xl:text-lg 2xl:text-xl uppercase tr
       <style jsx global>{`
         /* Handling the class-based theme switcher from page.js triggers */
         .nav-light {
+          opacity: 1 !important;
+          pointer-events: auto !important;
           background-color: rgba(255, 255, 255, 0.9) !important;
           backdrop-filter: blur(12px) !important;
           color: #000000 !important;
-          padding-top: 1rem !important;
-          padding-bottom: 1rem !important;
           box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
         .nav-light .nav-logo-img {

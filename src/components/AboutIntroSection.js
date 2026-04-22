@@ -73,7 +73,7 @@ export default function AboutIntroSection() {
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
-        
+
         {/* Left: Image with wrapper for parallax/zoom */}
         <div ref={imageWrapperRef} className="w-full lg:w-1/2 h-[50vh] md:h-[65vh] relative overflow-hidden group rounded-2xl will-change-transform shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
           <Image
@@ -86,11 +86,11 @@ export default function AboutIntroSection() {
           />
           {/* Crisp overlay accent */}
           <div className="absolute bottom-4 left-4 right-4 z-20 overflow-hidden rounded-xl">
-             <div className="absolute inset-0 bg-white/90 backdrop-blur-sm border border-white/50 shadow-sm" />
-             <div className="relative p-4 md:p-6 flex items-center justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100">
-               <span className="text-[#0f172a] text-xs tracking-widest uppercase font-bold drop-shadow-sm">Unrivaled Purity</span>
-               <span className="w-8 h-[1px] bg-[#0f172a]/30" />
-             </div>
+            <div className="absolute inset-0 bg-white/90 backdrop-blur-sm border border-white/50 shadow-sm" />
+            <div className="relative p-4 md:p-6 flex items-center justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100">
+              <span className="text-[#0f172a] text-xs tracking-widest uppercase font-bold drop-shadow-sm">Unrivaled Purity</span>
+              <span className="w-8 h-[1px] bg-[#0f172a]/30" />
+            </div>
           </div>
         </div>
 
@@ -100,11 +100,11 @@ export default function AboutIntroSection() {
             <span className="w-8 h-[1px] bg-[#0284c7]/40 inline-block" />
             Welcome to Quartz Kingdom
           </div>
-          
+
           <h2 className="about-intro-reveal text-4xl sm:text-5xl lg:text-6xl font-serif font-light text-[#0f172a] mb-8 leading-tight tracking-tight">
             About <span className="italic font-bold">Us</span>
           </h2>
-          
+
           <div className="about-intro-reveal space-y-6 text-slate-600 text-base md:text-lg font-light leading-relaxed mb-12">
             <p>
               Since 1998, Quartz Kingdom has established the global standard for industrial mineral extraction. We are dedicated to delivering pristine quality, merging raw earth with cutting-edge refinement technology.
@@ -113,9 +113,9 @@ export default function AboutIntroSection() {
               Our process strips away imperfection, unlocking materials essential to the world's most demanding industries—from advanced semiconductor manufacturing to architectural surfaces of unparalleled elegance.
             </p>
           </div>
-          
+
           <div className="about-intro-reveal">
-            <Link 
+            <Link
               href="/about-us"
               className="group relative inline-flex items-center justify-center gap-4 px-8 py-4 bg-[#0f172a] hover:bg-[#1e293b] transition-all duration-300 rounded-full overflow-hidden shadow-md hover:shadow-xl"
             >
